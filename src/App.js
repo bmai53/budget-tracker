@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 function App() {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    if (name === 'email') setEmail(value)
+    if (name === 'password') setPassword(value)
+  }
+
+  const handleLogin = (event) => {
+    event.preventDefault()
+
+    axios.post(process.env.REACT_APP_BACKEND_URL + 'auth/login', {
+      email: email,
+      password: password
+    })
+      .then((response) => {
+        console.log(response)
+      })
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <form>
+        <input
+          type='text'
+          name='email'
+          value={email}
+          onChange={handleChange}
+        />
+
+        <input
+          type='password'
+          name='password'
+          value={password}
+          onChange={handleChange}
+        />
+
+        <button onClick={handleLogin}>Login</button>
+      </form>
     </div>
-  );
+  )
 }
 
 export default App;

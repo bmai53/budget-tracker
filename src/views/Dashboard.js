@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
-
+import Nav from './Components/Nav'
 export default () => {
     return (
-        <h1>Dashboard</h1>
+        <>
+            <Nav />
+            <h1>Dashboard</h1>
+        </>
     )
 }

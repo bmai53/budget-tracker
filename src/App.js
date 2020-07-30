@@ -1,50 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React from 'react'
+import { Switch, Route, Redirect } from "react-router-dom"
+import Home from './views/Home'
+import Dashboard from './views/Dashboard'
 
-function App() {
-
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    if (name === 'email') setEmail(value)
-    if (name === 'password') setPassword(value)
-  }
-
-  const handleLogin = (event) => {
-    event.preventDefault()
-
-    axios.post(process.env.REACT_APP_BACKEND_URL + 'auth/login', {
-      email: email,
-      password: password
-    })
-      .then((response) => {
-        console.log(response)
-      })
-  }
-
+export default () => {
   return (
-    <div>
-      <form>
-        <input
-          type='text'
-          name='email'
-          value={email}
-          onChange={handleChange}
-        />
-
-        <input
-          type='password'
-          name='password'
-          value={password}
-          onChange={handleChange}
-        />
-
-        <button onClick={handleLogin}>Login</button>
-      </form>
-    </div>
+    <Switch>
+      <Route exact path="/" render={() => <Home />} />
+      <Route path="/dashboard" render={() => <Dashboard />} />
+    </Switch>
   )
 }
-
-export default App;

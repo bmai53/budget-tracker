@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 
 export default () => {
@@ -25,14 +25,14 @@ export default () => {
                     type='text'
                     name='email'
                     value={email}
-                    onChange={setEmail(event.target.value)}
+                    onChange={(event) => { setEmail(event.target.value) }}
                 />
 
                 <input
                     type='password'
                     name='password'
                     value={password}
-                    onChange={setPassword(event.target.value)}
+                    onChange={(event) => { setPassword(event.target.value) }}
                 />
 
                 <button onClick={handleLogin}>Login</button>

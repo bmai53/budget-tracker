@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
-import { UserContext } from '../../../UserContext'
 import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField } from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel';
 
@@ -10,14 +9,14 @@ export default ({ open, onClose }) => {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
-    const handleRegister = () => {
+    const handleRegister = useCallback(() => {
         if (password === confirmPassword) {
             axios.post(process.env.REACT_APP_BACKEND_URL + 'auth/register', {
                 email: email,
                 password: password
             })
                 .then((response) => {
-                    console.log(response)
+                    onClose()
                     setEmail('')
                     setPassword('')
                     setConfirmPassword('')
@@ -26,7 +25,7 @@ export default ({ open, onClose }) => {
         else {
             alert('Password does not match')
         }
-    }
+    }, [email, password, confirmPassword, onClose])
 
     // Add event listener that will check for enter presses and preform action if so
     useEffect(() => {
@@ -34,11 +33,11 @@ export default ({ open, onClose }) => {
             if ((e.code === "Enter" || e.code === "NumpadEnter") && open) {
                 handleRegister();
             }
-        };
+        }
         document.addEventListener("keydown", enterPressListener);
         return () => {
             document.removeEventListener("keydown", enterPressListener);
-        };
+        }
     }, [open, handleRegister])
 
     return (

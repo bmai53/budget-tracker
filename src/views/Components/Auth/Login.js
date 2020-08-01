@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useCallback } from 'react'
 import axios from 'axios'
 import { UserContext } from '../../../UserContext'
 import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField } from '@material-ui/core'
@@ -10,7 +10,7 @@ export default ({ open, onClose }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleLogin = () => {
+    const handleLogin = useCallback(() => {
         axios.post(process.env.REACT_APP_BACKEND_URL + 'auth/login', {
             email: email,
             password: password
@@ -18,12 +18,10 @@ export default ({ open, onClose }) => {
             .then((response) => {
                 onClose()
                 console.log(response.data)
-                setUser(response.data.auth)
                 localStorage.setItem('token', response.data.token)
-                setEmail('')
-                setPassword('')
+                setUser(response.data.auth)
             })
-    }
+    },[email, password, onClose, setUser])
 
     // Add event listener that will check for enter presses and preform action if so
     useEffect(() => {

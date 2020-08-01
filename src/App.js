@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Switch, Route, Redirect } from "react-router-dom"
-import Home from './views/Home'
 import Dashboard from './views/Dashboard'
+import LandingPage from './views/LandingPage'
 import { UserContext } from './UserContext'
 
 export default () => {
@@ -10,9 +10,16 @@ export default () => {
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Switch>
-        <Route exact path="/" render={() => <Home />} />
+        <Route exact path="/">
+          {user ? <Redirect to='/dashboard'/> : <LandingPage />}
+        </Route>
+        <Route path="/home" render={() => <LandingPage />} />
         <Route path="/dashboard" render={() => <Dashboard />} />
-        <Route render={() => <Redirect to="/" />} />
+        {
+          user ?
+            <Route render={() => <Redirect to="/dashboard" />} /> :
+            <Route render={() => <Redirect to="/" />} />
+        }
       </Switch>
     </UserContext.Provider>
   )

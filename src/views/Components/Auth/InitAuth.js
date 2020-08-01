@@ -15,7 +15,7 @@ export default () => {
                 setUser(response.data.auth);
             })
         } 
-    }, [])
+    }, [user, setUser])
 
     return(
         <>

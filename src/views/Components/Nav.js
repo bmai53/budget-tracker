@@ -1,15 +1,17 @@
 import React, { useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-import { AppBar, Toolbar, Typography, Button, Grid } from '@material-ui/core'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { AppBar, Toolbar, Button, IconButton, Grid } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import Login from './Auth/Login'
 import Register from './Auth/Register'
 import { UserContext } from '../../UserContext'
 import InitAuth from './Auth/InitAuth'
+import GitHubIcon from '@material-ui/icons/GitHub'
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        marginBottom: theme.spacing(5)
     }
 }))
 
@@ -20,8 +22,6 @@ export default () => {
     const [showRegister, setShowRegister] = useState(false)
 
     const classes = useStyles()
-    const theme = useTheme()
-    const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
     const handleLogout = () => {
         setUser(null);
@@ -31,26 +31,25 @@ export default () => {
 
     const renderButtons = !user ?
         [
-            <Button color="inherit" className={classes.button} onClick={() => { setShowLogin(true) }} key={'login'}>Login</Button>,
-            <Button color="inherit" className={classes.button} onClick={() => { setShowRegister(true) }} key={'register'}>Register</Button>
+            <Button color="inherit" onClick={() => { setShowLogin(true) }} key={'login'}>Login</Button>,
+            <Button color="inherit" onClick={() => { setShowRegister(true) }} key={'register'}>Register</Button>
         ]
         :
         [
-            <Button color="inherit" className={classes.button} onClick={handleLogout}>Logout</Button>
+            <Button color="inherit" component={NavLink} to='/dashboard'>Dashboard</Button>,
+            <Button color="inherit" onClick={handleLogout}>Logout</Button>
         ]
+
     return (
         <>
             <InitAuth />
             <AppBar position='static' className={classes.root}>
                 <Toolbar>
-                    <Grid container spacing={1} justify='space-between'>
+                    <Grid container spacing={1} justify='space-between' alignItems='center'>
                         <Grid item xs={8}>
-                            <Button color="inherit" component={NavLink} to='/'>
-                                Home
-                        </Button>
-                            <Button color="inherit" component={NavLink} to='/dashboard'>
-                                Dashboard
-                        </Button>
+                            <IconButton onClick={() => window.open('https://github.com/bmai53/budget-tracker', "_blank")}>
+                                <GitHubIcon fontSize='large' color='secondary'/>
+                            </IconButton>
                         </Grid>
                         <Grid item xs={4} style={{ textAlign: 'right' }}>
                             {renderButtons}

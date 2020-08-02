@@ -17,7 +17,6 @@ export default ({ open, onClose }) => {
         })
             .then((response) => {
                 onClose()
-                console.log(response.data)
                 localStorage.setItem('token', response.data.token)
                 setUser(response.data.auth)
             })

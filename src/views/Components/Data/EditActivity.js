@@ -12,18 +12,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ open, onClose, data, categoriesList, getActivities }) => {
-    console.log(data)
     const [name, setName] = useState(data.name)
     const [amount, setAmount] = useState(data.amount)
     const [date, setDate] = useState(moment(data.date).format('YYYY-MM-DD'))
     const [categoryId, setCategoryId] = useState(data.category_id)
     const [type, setType] = useState(data.type)
 
-    console.log('data', data.date)
-    console.log(date)
     const token = localStorage.getItem('token')
     const handleSubmit = useCallback(() => {
-        console.log(token)
         axios.put(process.env.REACT_APP_BACKEND_URL + 'activity/updateActivity', {
             id: data.id,
             updateData: {

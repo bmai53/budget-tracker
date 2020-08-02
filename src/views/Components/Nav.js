@@ -36,8 +36,8 @@ export default () => {
         ]
         :
         [
-            <Button color="inherit" component={NavLink} to='/dashboard'>Dashboard</Button>,
-            <Button color="inherit" onClick={handleLogout}>Logout</Button>
+            <Button color="inherit" component={NavLink} to='/dashboard' key={'dashboard'}>Dashboard</Button>,
+            <Button color="inherit" onClick={handleLogout} key={'logout'}>Logout</Button>
         ]
 
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Nav from './Components/Nav'
 import { Typography } from '@material-ui/core'
 

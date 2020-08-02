@@ -21,6 +21,9 @@ export default ({ open, onClose }) => {
                 localStorage.setItem('token', response.data.token)
                 setUser(response.data.auth)
             })
+            .catch((error) => {
+                alert(error)
+            })
     },[email, password, onClose, setUser])
 
     // Add event listener that will check for enter presses and preform action if so

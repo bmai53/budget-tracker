@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-export default ({ open, onClose, categoriesList }) => {
+export default ({ open, onClose, categoriesList, getCategories }) => {
     const [name, setName] = useState('')
     const [categoryId, setCategoryId] = useState('')
 
@@ -26,7 +26,7 @@ export default ({ open, onClose, categoriesList }) => {
         })
             .then(() => {
                 onClose()
-                window.location.reload()
+                getCategories()
             })
     },[name, onClose, token])
 
@@ -41,7 +41,7 @@ export default ({ open, onClose, categoriesList }) => {
         })
             .then(() => {
                 onClose()
-                window.location.reload()
+                getCategories()
             })
     }
 
@@ -63,7 +63,7 @@ export default ({ open, onClose, categoriesList }) => {
 
     const classes = useStyles()
     return (
-        <Dialog open={open ? open : false} onClose={onClose}>
+        <Dialog open={open ? open : false} onClose={onClose} fullWidth>
             <DialogTitle>
                 Edit Categories
                 <IconButton onClick={onClose} style={{ position: 'absolute', top: 0, right: 0 }}>
@@ -71,12 +71,12 @@ export default ({ open, onClose, categoriesList }) => {
                 </IconButton>
             </DialogTitle>
             <DialogContent>
-                <TextField autoFocus label='Name' type='text' fullWidth value={name} onChange={(event) => { setName(event.target.value) }} />
+                <TextField autoFocus label='Add New Category' type='text' fullWidth value={name} onChange={(event) => { setName(event.target.value) }} />
                 <DialogActions>
                     <Button onClick={handleSubmit} color='primary'>Add</Button>
                 </DialogActions>
 
-                <TextField label='Category' fullWidth value={categoryId} select onChange={event => setCategoryId(event.target.value)}>
+                <TextField label='Delete Existing Category' fullWidth value={categoryId} select onChange={event => setCategoryId(event.target.value)}>
                     {categoriesList.map(c => <MenuItem value={c.id} key={c.id}>{c.name}</MenuItem>)}
                 </TextField>
                 <DialogActions>

@@ -3,7 +3,7 @@ import axios from 'axios'
 import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField, MenuItem } from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel';
 
-export default ({ open, onClose, categoriesList }) => {
+export default ({ open, onClose, categoriesList, getActivities }) => {
 
     const [name, setName] = useState('')
     const [amount, setAmount] = useState(0)
@@ -27,7 +27,7 @@ export default ({ open, onClose, categoriesList }) => {
         })
             .then((response) => {
                 onClose()
-                window.location.reload()
+                getActivities()
             })
     }, [onClose, amount, categoryId, date, name, type])
 

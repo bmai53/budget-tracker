@@ -13,29 +13,25 @@ const useStyles = makeStyles(theme => ({
     tableHeader: {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.common.white,
+    },
+    income: {
+        color: theme.palette.positive.main
+    },
+    expense: {
+        color: theme.palette.negative.main
     }
 }))
 
-export default ({ categoriesList }) => {
+export default ({ activitiesList, categoriesList, getActivities, loading }) => {
     const [data, setData] = useState([])
-    const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5)
     const [showEditActivity, setShowEditActivity] = useState(false)
     const [editRow, setEditRow] = useState() // store data of row to edit
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        // activity data
-        axios.get(process.env.REACT_APP_BACKEND_URL + 'activity/getActivities', {
-            headers: {
-                Authorization: `JWT ${token}`
-            }
-        }).then((response) => {
-            setData(response.data)
-            setLoading(false)
-        })
-    }, [])
+        setData(activitiesList)
+    }, [activitiesList])
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -46,13 +42,17 @@ export default ({ categoriesList }) => {
         setPage(0);
     }
 
+
+    const classes = useStyles()
     const rows = data.map(row => (
         <TableRow key={row.id}>
             <TableCell>{row.name}</TableCell>
             <TableCell align="right">{moment(row.date).format('MMMM D, YYYY')}</TableCell>
             <TableCell align="right">{row.amount}</TableCell>
             <TableCell align="right">{row.category_name}</TableCell>
-            <TableCell align="right">{row.type}</TableCell>
+            <TableCell align="right" className={row.type === 'income' ? classes.income : classes.expense} >
+                {row.type.charAt(0).toUpperCase() + row.type.slice(1)}
+            </TableCell>
             <TableCell>
                 <Tooltip title='Edit'>
                     <IconButton onClick={() => {
@@ -68,7 +68,6 @@ export default ({ categoriesList }) => {
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
-    const classes = useStyles()
     return (
         <>
             <Paper className={classes.table}>
@@ -96,7 +95,7 @@ export default ({ categoriesList }) => {
                                     rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             }
                             {
-                                !loading && emptyRows > 0 && (
+                                emptyRows > 0 && (
                                     <TableRow key={'empty rows'} style={{ height: (53) * emptyRows }}>
                                         <TableCell colSpan={6} />
                                     </TableRow>
@@ -120,6 +119,7 @@ export default ({ categoriesList }) => {
                 editRow && showEditActivity ?
                     <EditActivity
                         categoriesList={categoriesList}
+                        getActivities={getActivities}
                         data={editRow}
                         open={showEditActivity}
                         onClose={() => {

@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default ({ open, onClose, data, categoriesList }) => {
+export default ({ open, onClose, data, categoriesList, getActivities }) => {
     console.log(data)
     const [name, setName] = useState(data.name)
     const [amount, setAmount] = useState(data.amount)
@@ -40,7 +40,7 @@ export default ({ open, onClose, data, categoriesList }) => {
         })
             .then(() => {
                 onClose()
-                window.location.reload()
+                getActivities()
             })
     },[name, amount, date, categoryId, type, token, data.id, onClose])
 
@@ -55,7 +55,7 @@ export default ({ open, onClose, data, categoriesList }) => {
         })
             .then(() => {
                 onClose()
-                window.location.reload()
+                getActivities()
             })
     }
 
@@ -76,7 +76,7 @@ export default ({ open, onClose, data, categoriesList }) => {
 
     const classes = useStyles()
     return (
-        <Dialog open={open ? open : false} onClose={onClose}>
+        <Dialog open={open ? open : false} onClose={onClose} fullWidth>
             <DialogTitle>
                 Edit Activities
                 <IconButton onClick={onClose} style={{ position: 'absolute', top: 0, right: 0 }}>

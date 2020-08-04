@@ -1,6 +1,5 @@
 # Budget Tracker App
 
-WIP 
 
 Back end code can be found [here](https://github.com/bmai53/budget-tracker-server)
 

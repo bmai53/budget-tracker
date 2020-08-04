@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 
 export default ({ data }) => {
     let total = 0
-    data.map(d => {
+    data.forEach(d => {
         d.type === 'income' ? total += parseFloat(d.amount) : total -= parseFloat(d.amount)
     })
 

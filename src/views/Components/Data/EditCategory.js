@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-export default ({ open, onClose, categoriesList, getCategories }) => {
+export default ({ open, onClose, categoriesList, getCategories, getActivities }) => {
     const [name, setName] = useState('')
     const [categoryId, setCategoryId] = useState('')
 
@@ -25,10 +25,11 @@ export default ({ open, onClose, categoriesList, getCategories }) => {
             }
         })
             .then(() => {
-                onClose()
+                setName('')
                 getCategories()
+                onClose()
             })
-    },[name, onClose, token])
+    }, [name, onClose, token, getCategories])
 
     const handleDelete = () => {
         axios.delete(process.env.REACT_APP_BACKEND_URL + 'category/deleteCategory', {
@@ -40,8 +41,9 @@ export default ({ open, onClose, categoriesList, getCategories }) => {
             }
         })
             .then(() => {
-                onClose()
                 getCategories()
+                getActivities()
+                onClose()
             })
     }
 

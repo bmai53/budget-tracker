@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
-import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField, MenuItem } from '@material-ui/core'
+import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField, MenuItem, Box } from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel';
 
-export default ({ open, onClose, categoriesList, getActivities }) => {
+export default ({ open, onClose, categoriesList, getActivities, setShowEditCategory }) => {
 
     const [name, setName] = useState('')
     const [amount, setAmount] = useState(0)
@@ -26,10 +26,10 @@ export default ({ open, onClose, categoriesList, getActivities }) => {
             }
         })
             .then((response) => {
-                onClose()
                 getActivities()
+                onClose()
             })
-    }, [onClose, amount, categoryId, date, name, type])
+    }, [getActivities, onClose, amount, categoryId, date, name, type])
 
     useEffect(() => {
         // Add event listener that will check for enter presses and preform action if so
@@ -57,9 +57,22 @@ export default ({ open, onClose, categoriesList, getActivities }) => {
                 <TextField autoFocus label='Name' type='text' fullWidth value={name} onChange={(event) => { setName(event.target.value) }} />
                 <TextField label='Amount' type='number' fullWidth value={amount} onChange={(event) => { setAmount(event.target.value) }} />
                 <TextField label='Date' type='date' fullWidth value={date} InputLabelProps={{ shrink: true }} onChange={event => setDate(event.target.value)} />
-                <TextField label='Category' fullWidth value={categoryId} select onChange={event => setCategoryId(event.target.value)}>
-                    {categoriesList.map(c => <MenuItem value={c.id} key={c.id}>{c.name}</MenuItem>)}
-                </TextField>
+                <Box width='100%' style={{ display: 'inline-flex' }}>
+                    <TextField label='Category' fullWidth value={categoryId} select onChange={event => setCategoryId(event.target.value)}>
+                        {categoriesList.map(c => <MenuItem value={c.id} key={c.id}>{c.name}</MenuItem>)}
+                    </TextField>
+                    <DialogActions>
+                        <Button
+                            color='primary'
+                            onClick={() => {
+                                onClose()
+                                setShowEditCategory(true)
+                            }}
+                        >
+                            Add Category
+                        </Button>
+                    </DialogActions>
+                </Box>
                 <TextField label='Type' fullWidth value={type} select onChange={event => setType(event.target.value)}>
                     <MenuItem value={'expense'}>Expense</MenuItem>
                     <MenuItem value={'income'}>Income</MenuItem>

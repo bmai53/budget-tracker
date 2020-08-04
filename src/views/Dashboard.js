@@ -6,7 +6,6 @@ import { UserContext } from '../UserContext'
 import { Button, ButtonGroup, Typography, Box } from '@material-ui/core'
 import AddActivity from './Components/Data/AddActivity'
 import EditCategory from './Components/Data/EditCategory'
-import ActivityTotal from './Components/Data/ActivityTotal'
 
 export default () => {
     const { user } = useContext(UserContext)
@@ -15,10 +14,10 @@ export default () => {
     const [categoriesList, setCategoriesList] = useState([])
     const [showAddActivity, setShowAddActivity] = useState(false)
     const [showEditCategory, setShowEditCategory] = useState(false)
-    const token = localStorage.getItem('token')
 
     const getActivities = () => {
         setLoading(true)
+        const token = localStorage.getItem('token')
         axios.get(process.env.REACT_APP_BACKEND_URL + 'activity/getActivities', {
             headers: {
                 Authorization: `JWT ${token}`
@@ -31,6 +30,7 @@ export default () => {
 
     const getCategories = () => {
         setLoading(true)
+        const token = localStorage.getItem('token')
         axios.get(process.env.REACT_APP_BACKEND_URL + 'category/getCategories', {
             headers: {
                 Authorization: `JWT ${token}`
@@ -44,9 +44,9 @@ export default () => {
     useEffect(() => {
         getActivities()
         getCategories()
-    }, [])
+    }, [user])
 
-    if (!user && !loading) {
+    if (!user) {
         return (
             <>
                 <Nav />
@@ -59,7 +59,6 @@ export default () => {
         <>
             <Nav />
             <Box align="center">
-                <ActivityTotal data={activitiesList} />
                 <ActivityTable activitiesList={activitiesList} categoriesList={categoriesList} getActivities={getActivities} loading={loading} />
             </Box>
             <br />
@@ -69,8 +68,8 @@ export default () => {
                     <Button onClick={() => { setShowEditCategory(true) }} key={'editCategory'}>Edit Categories</Button>
                 </ButtonGroup>
             </Box>
-            <AddActivity categoriesList={categoriesList} open={showAddActivity} getActivities={getActivities} onClose={() => setShowAddActivity(false)} />
-            <EditCategory categoriesList={categoriesList} open={showEditCategory} getCategories={getCategories} onClose={() => setShowEditCategory(false)} />
+            <AddActivity categoriesList={categoriesList} open={showAddActivity} setShowEditCategory={setShowEditCategory} getActivities={getActivities} onClose={() => setShowAddActivity(false)} />
+            <EditCategory categoriesList={categoriesList} open={showEditCategory} getCategories={getCategories} getActivities={getActivities} onClose={() => setShowEditCategory(false)} />
         </>
     )
 }

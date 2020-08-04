@@ -26,7 +26,7 @@ export default () => {
     const handleLogout = () => {
         setUser(null);
         localStorage.removeItem('token');
-        window.location.href = '/'
+        window.location.reload()
     }
 
     const renderButtons = !user ?

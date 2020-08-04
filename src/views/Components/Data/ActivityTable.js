@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper, IconButton, Tooltip, CircularProgress } from '@material-ui/core'
+import {
+    Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+    TablePagination, Paper, IconButton, Tooltip, CircularProgress, TextField, MenuItem
+} from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment'
 import EditActivity from './EditActivity';
+import ActivityTotal from './ActivityTotal'
 
 const useStyles = makeStyles(theme => ({
     table: {
@@ -26,12 +29,19 @@ export default ({ activitiesList, categoriesList, getActivities, loading }) => {
     const [data, setData] = useState([])
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [categoryFilter, setCategoryFilter] = useState('None')
     const [showEditActivity, setShowEditActivity] = useState(false)
     const [editRow, setEditRow] = useState() // store data of row to edit
 
     useEffect(() => {
-        setData(activitiesList)
-    }, [activitiesList])
+        const filteredData = activitiesList.filter(a => a.category_name === categoryFilter)
+        if (categoryFilter === 'None') {
+            setData(activitiesList)
+        }
+        else {
+            setData(filteredData)
+        }
+    }, [activitiesList, categoriesList, categoryFilter])
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -75,6 +85,18 @@ export default ({ activitiesList, categoriesList, getActivities, loading }) => {
                     <Table>
                         <TableHead>
                             <TableRow>
+                                <TableCell colSpan={4}>
+                                    <ActivityTotal data={data} />
+                                </TableCell>
+                                <TableCell colSpan={2} align='right'>
+                                    <TextField label='Category Filter' type='text' fullWidth value={categoryFilter} select onChange={e => setCategoryFilter(e.target.value)}>
+                                        <MenuItem value='None' key='None'>None</MenuItem>
+                                        {categoriesList.map(c => <MenuItem value={c.name} key={c.name}>{c.name}</MenuItem>)}
+                                    </TextField>
+                                </TableCell>
+                            </TableRow>
+       
+                            <TableRow>
                                 <TableCell className={classes.tableHeader}>Name</TableCell>
                                 <TableCell className={classes.tableHeader} align="right">Date</TableCell>
                                 <TableCell className={classes.tableHeader} align="right">Amount</TableCell>
@@ -95,11 +117,18 @@ export default ({ activitiesList, categoriesList, getActivities, loading }) => {
                                     rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             }
                             {
-                                emptyRows > 0 && (
-                                    <TableRow key={'empty rows'} style={{ height: (53) * emptyRows }}>
-                                        <TableCell colSpan={6} />
+                                rows.length === 0 ?
+                                    <TableRow>
+                                        <TableCell colSpan={6} align='center'>
+                                            <Typography>No activities found</Typography>
+                                        </TableCell>
                                     </TableRow>
-                                )
+                                    :
+                                    emptyRows > 0 && (
+                                        <TableRow key={'empty rows'} style={{ height: (53) * emptyRows }}>
+                                            <TableCell colSpan={6} />
+                                        </TableRow>
+                                    )
                             }
                         </TableBody>
                     </Table>

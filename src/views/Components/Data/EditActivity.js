@@ -35,10 +35,10 @@ export default ({ open, onClose, data, categoriesList, getActivities }) => {
             },
         })
             .then(() => {
-                onClose()
                 getActivities()
+                onClose()
             })
-    },[name, amount, date, categoryId, type, token, data.id, onClose])
+    }, [getActivities, name, amount, date, categoryId, type, token, data.id, onClose])
 
     const handleDelete = () => {
         axios.delete(process.env.REACT_APP_BACKEND_URL + 'activity/deleteActivity', {
@@ -50,8 +50,8 @@ export default ({ open, onClose, data, categoriesList, getActivities }) => {
             }
         })
             .then(() => {
-                onClose()
                 getActivities()
+                onClose()
             })
     }
 

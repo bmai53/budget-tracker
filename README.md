@@ -1,6 +1,19 @@
 # Budget Tracker App
 
+Front end for Budget Tracker App. [Click here to visit!](https://bennymai.me/budget-tracker/)
 
 Back end code can be found [here](https://github.com/bmai53/budget-tracker-server)
+
+### Front End Tools:
+* React
+* Material-UI
+
+### Back End Tools:
+* ExpressJS (controller)
+* PassportJS (authentication)
+* PostgreSQL (database)
+* KnexJS (query builder)
+* ObjectionJS (ORM)
+* Mocha/Chai (testing)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

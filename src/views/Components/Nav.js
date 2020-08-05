@@ -1,11 +1,10 @@
 import React, { useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-import { AppBar, Toolbar, Button, IconButton, Grid } from '@material-ui/core'
+import { AppBar, Toolbar, Button, IconButton, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Login from './Auth/Login'
 import Register from './Auth/Register'
 import { UserContext } from '../../UserContext'
-import InitAuth from './Auth/InitAuth'
 import GitHubIcon from '@material-ui/icons/GitHub'
 
 const useStyles = makeStyles((theme) => ({
@@ -42,14 +41,16 @@ export default () => {
 
     return (
         <>
-            <InitAuth />
             <AppBar position='static' className={classes.root}>
                 <Toolbar>
                     <Grid container spacing={1} justify='space-between' alignItems='center'>
                         <Grid item xs={8}>
-                            <IconButton onClick={() => window.open('https://github.com/bmai53/budget-tracker', "_blank")}>
-                                <GitHubIcon fontSize='large' color='secondary'/>
-                            </IconButton>
+                            <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                <IconButton onClick={() => window.open('https://github.com/bmai53/budget-tracker', "_blank")}>
+                                    <GitHubIcon fontSize='large' color='secondary' />
+                                </IconButton>
+                                <Typography variant='h4'>Budget Tracker</Typography>
+                            </div>
                         </Grid>
                         <Grid item xs={4} style={{ textAlign: 'right' }}>
                             {renderButtons}

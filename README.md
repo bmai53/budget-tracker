@@ -4,11 +4,11 @@ Front end for Budget Tracker App. [Click here to visit!](https://bennymai.me/bud
 
 Back end code can be found [here](https://github.com/bmai53/budget-tracker-server)
 
-### Front End Tools:
+#### Front End Tools:
 * React
 * Material-UI
 
-### Back End Tools:
+#### Back End Tools:
 * ExpressJS (controller)
 * PassportJS (authentication)
 * PostgreSQL (database)

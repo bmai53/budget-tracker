@@ -4,6 +4,11 @@ Front end for Budget Tracker App. [Click here to visit!](https://bennymai.me/bud
 
 Back end code can be found [here](https://github.com/bmai53/budget-tracker-server)
 
+### Features:
+* CSV integration - upload data from CSV file
+* CRUD operations on activities
+* User authentication and tracking using PassportJS and Json Web Tokens
+
 #### Front End Tools:
 * React
 * Material-UI

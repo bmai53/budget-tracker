@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
+import theme from '../../../theme'
 import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField, MenuItem } from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel';
 import { makeStyles } from '@material-ui/core/styles'
@@ -73,9 +74,9 @@ export default ({ open, onClose, data, categoriesList, getActivities }) => {
     const classes = useStyles()
     return (
         <Dialog open={open ? open : false} onClose={onClose} fullWidth>
-            <DialogTitle>
-                Edit Activities
-                <IconButton onClick={onClose} style={{ position: 'absolute', top: 0, right: 0 }}>
+            <DialogTitle style={{ backgroundColor: theme.palette.primary.main, color: "white" }}>
+                Edit Activity
+                <IconButton color="secondary" onClick={onClose} style={{ position: 'absolute', top: 0, right: 0 }}>
                     <CancelIcon />
                 </IconButton>
             </DialogTitle>

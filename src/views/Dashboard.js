@@ -6,14 +6,18 @@ import { UserContext } from '../UserContext'
 import { Button, ButtonGroup, Typography, Box } from '@material-ui/core'
 import AddActivity from './Components/Data/AddActivity'
 import EditCategory from './Components/Data/EditCategory'
+import ImportCSV from './Components/Data/ImportCSV/ImportCSV'
 
 export default () => {
     const { user } = useContext(UserContext)
     const [loading, setLoading] = useState(true)
     const [activitiesList, setActivitiesList] = useState([])
     const [categoriesList, setCategoriesList] = useState([])
+
+    // dialogs
     const [showAddActivity, setShowAddActivity] = useState(false)
     const [showEditCategory, setShowEditCategory] = useState(false)
+    const [showUploadCSV, setShowUploadCSV] = useState(false)
 
     const getActivities = () => {
         setLoading(true)
@@ -63,13 +67,17 @@ export default () => {
             </Box>
             <br />
             <Box align="center">
-                <ButtonGroup variant="contained" size="large" color="primary" >
-                    <Button onClick={() => { setShowAddActivity(true) }} key={'addActivity'}>Add Activity</Button>
-                    <Button onClick={() => { setShowEditCategory(true) }} key={'editCategory'}>Edit Categories</Button>
-                </ButtonGroup>
+                <div style={{ maxWidth: 1000 }}>
+                    <ButtonGroup variant="contained" size="large" color="primary" fullWidth>
+                        <Button onClick={() => { setShowEditCategory(true) }} key={'editCategory'}>Edit Categories</Button>
+                        <Button onClick={() => { setShowAddActivity(true) }} key={'addActivity'}>Add Activity</Button>
+                        <Button onClick={() => { setShowUploadCSV(true) }} key={'uploadCSV'}>Upload from CSV</Button>
+                    </ButtonGroup>
+                </div>
             </Box>
             <AddActivity categoriesList={categoriesList} open={showAddActivity} setShowEditCategory={setShowEditCategory} getActivities={getActivities} onClose={() => setShowAddActivity(false)} />
             <EditCategory categoriesList={categoriesList} open={showEditCategory} getCategories={getCategories} getActivities={getActivities} onClose={() => setShowEditCategory(false)} />
+            <ImportCSV open={showUploadCSV} onClose={() => { setShowUploadCSV(false) }} />
         </>
     )
 }

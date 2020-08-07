@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react'
 import axios from 'axios'
+import theme from '../../../theme'
 import { UserContext } from '../../../UserContext'
 import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField } from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -49,9 +50,9 @@ export default ({ open, onClose }) => {
     return (
         <>
             <Dialog open={open ? open : false} onClose={onClose}>
-                <DialogTitle>
+                <DialogTitle style={{ backgroundColor: theme.palette.primary.main, color: "white" }}>
                     Login
-                <IconButton onClick={onClose} style={{ position: 'absolute', top: 0, right: 0 }}>
+                <IconButton color="secondary" onClick={onClose} style={{ position: 'absolute', top: 0, right: 0 }}>
                         <CancelIcon />
                     </IconButton>
                 </DialogTitle>

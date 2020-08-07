@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
+import theme from '../../../theme'
 import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField, MenuItem, Box } from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel';
 
@@ -47,9 +48,9 @@ export default ({ open, onClose, categoriesList, getActivities, setShowEditCateg
 
     return (
         <Dialog open={open ? open : false} onClose={onClose}>
-            <DialogTitle>
+            <DialogTitle style={{ backgroundColor: theme.palette.primary.main, color: "white" }}>
                 Add Activity
-                <IconButton onClick={onClose} style={{ position: 'absolute', top: 0, right: 0 }}>
+                <IconButton color="secondary" onClick={onClose} style={{ position: 'absolute', top: 0, right: 0 }}>
                     <CancelIcon />
                 </IconButton>
             </DialogTitle>
@@ -57,11 +58,11 @@ export default ({ open, onClose, categoriesList, getActivities, setShowEditCateg
                 <TextField autoFocus label='Name' type='text' fullWidth value={name} onChange={(event) => { setName(event.target.value) }} />
                 <TextField label='Amount' type='number' fullWidth value={amount} onChange={(event) => { setAmount(event.target.value) }} />
                 <TextField label='Date' type='date' fullWidth value={date} InputLabelProps={{ shrink: true }} onChange={event => setDate(event.target.value)} />
-                <Box width='100%' style={{ display: 'inline-flex' }}>
+                <Box width='100%' style={{ display: 'inline-flex'}}>
                     <TextField label='Category' fullWidth value={categoryId} select onChange={event => setCategoryId(event.target.value)}>
                         {categoriesList.map(c => <MenuItem value={c.id} key={c.id}>{c.name}</MenuItem>)}
                     </TextField>
-                    <DialogActions>
+                    <DialogActions style={{ position: 'relative', top: '10px'}}>
                         <Button
                             color='primary'
                             onClick={() => {
@@ -69,7 +70,7 @@ export default ({ open, onClose, categoriesList, getActivities, setShowEditCateg
                                 setShowEditCategory(true)
                             }}
                         >
-                            Add Category
+                            Add New Category
                         </Button>
                     </DialogActions>
                 </Box>

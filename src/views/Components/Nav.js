@@ -6,6 +6,7 @@ import Login from './Auth/Login'
 import Register from './Auth/Register'
 import { UserContext } from '../../UserContext'
 import GitHubIcon from '@material-ui/icons/GitHub'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,9 +47,11 @@ export default () => {
                     <Grid container spacing={1} justify='space-between' alignItems='center'>
                         <Grid item xs={8}>
                             <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                <IconButton onClick={() => window.open('https://github.com/bmai53/budget-tracker', "_blank")}>
-                                    <GitHubIcon fontSize='large' color='secondary' />
-                                </IconButton>
+                                <Tooltip title="Github Repo">
+                                    <IconButton onClick={() => window.open('https://github.com/bmai53/budget-tracker', "_blank")}>
+                                        <GitHubIcon fontSize='large' color='secondary' />
+                                    </IconButton>
+                                </Tooltip>
                                 <Typography variant='h4'>Budget Tracker</Typography>
                             </div>
                         </Grid>

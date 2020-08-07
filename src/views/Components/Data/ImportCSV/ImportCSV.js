@@ -6,66 +6,81 @@ import CancelIcon from '@material-ui/icons/Cancel'
 import { readString } from 'react-papaparse'
 import HeaderMatching from './HeaderMatching';
 import Upload from './Upload'
+import ErrorSnackbar from './ErrorSnackbar'
 
 
-export default ({ open, onClose }) => {
+export default ({ open, onClose, getActivities }) => {
     const [parsedFile, setParsedFile] = useState([])
     const [headers, setHeaders] = useState([])                      // headers from file
     const [confirmHeaders, setConfirmHeaders] = useState(false)     // display header confirmation form
 
     // headers
     const [date, setDate] = useState('')
+    const [name, setName] = useState('')
     const [categoryName, setCategoryName] = useState('')
     const [amount, setAmount] = useState('')
     const [type, setType] = useState('')
 
-    const uploadHandler = (event) => {
+    // snackbars
+    const [emptyCells, setEmptyCells] = useState(false)
+    const [duplicateCol, setDuplicateCol] = useState(false)
+    const [failedToReadFile, setFailedToReadFile] = useState(false)
+    const [noFile, setNoFile] = useState(false)
+    const [headerMismatch, setHeaderMismatch] = useState(false)
+    const [DuplicateHeader, setDuplicateHeader] = useState(false)
+    const [UploadError, setUploadError] = useState(false)
+    const [UploadSuccess, setUploadSuccess] = useState(false)
 
-        // function to reset file when error is found
-        const resetFile = () => {
-            document.getElementById('CSVUpload').value = ''
-        }
 
-        // reading headers
-        const reader = new FileReader()
-        // file -> string
-        reader.readAsText(event.target.files[0])
-        // read as a string
-        reader.onload = (event) => {
-            const fileContent = event.target.result
-            console.log(fileContent)
-            const parseResults = readString(fileContent)     // papaparse
-            let safeToContinue = true
-            // check for empty cells
-            parseResults.data.map(row => {
-                if (row.indexOf('') !== -1) {
-                    alert('Empty cells detected')
-                    safeToContinue = false
-                    // resetFile()
+    const uploadHandler = (file) => {
+
+
+        if (file.length > 0) {
+            // reading headers
+            const reader = new FileReader()
+            // file -> string
+            reader.readAsText(file[0])
+            // read as a string
+            reader.onload = (event) => {
+                const fileContent = event.target.result
+                const parseResults = readString(fileContent)     // papaparse
+                let safeToContinue = true
+                
+
+                // remove last line if empty
+                if (parseResults.data[parseResults.data.length - 1 ][0] === ""){
+                    parseResults.data.pop()
                 }
-            })
 
-            // check for duplicates in headers
-            if (new Set(parseResults.data[0]).size !== parseResults.data[0].length) {
-                alert('duplicate column names detected')
-                safeToContinue = false
-                // resetFile()
+                // check for empty cells
+                parseResults.data.map(row => {
+                    if (row.indexOf('') !== -1) {
+                        setEmptyCells(true)
+                        safeToContinue = false
+                    }
+                })
+
+                // check for duplicates in headers
+                if (new Set(parseResults.data[0]).size !== parseResults.data[0].length) {
+                    setDuplicateCol(true)
+                    safeToContinue = false
+                }
+
+                if (safeToContinue) {
+                    setHeaders(parseResults.data[0])
+                    setDate(parseResults.data[0][0] ? parseResults.data[0][0] : '')
+                    setName(parseResults.data[0][1] ? parseResults.data[0][1] : '')
+                    setCategoryName(parseResults.data[0][2] ? parseResults.data[0][2] : '')
+                    setAmount(parseResults.data[0][3] ? parseResults.data[0][3] : '')
+                    setType(parseResults.data[0][4] ? parseResults.data[0][4] : '')
+                    setParsedFile(parseResults.data)
+                    setConfirmHeaders(true)
+                }
             }
 
-            if (safeToContinue) {
-                setHeaders(parseResults.data[0])
-                setDate(parseResults.data[0][0] ? parseResults.data[0][0] : '')
-                setCategoryName(parseResults.data[0][1] ? parseResults.data[0][1] : '')
-                setAmount(parseResults.data[0][2] ? parseResults.data[0][2] : '')
-                setType(parseResults.data[0][3] ? parseResults.data[0][3] : '')
-                setParsedFile(parseResults.data)
-                setConfirmHeaders(true)
+            reader.onerror = (event) => {
+                setFailedToReadFile(true)
             }
-        }
-
-        reader.onerror = (event) => {
-            alert('failed to read file')
-            // resetFile();
         }
     }
 
@@ -73,20 +88,21 @@ export default ({ open, onClose }) => {
         event.preventDefault()
 
         if (parsedFile.length === 0) {
-            alert('no file')
+            setNoFile(true)
         }
         // if headers are not yet mapped
-        else if (!date || !categoryName || !amount || !type) {
-            alert('headers not matched')
+        else if (!date || !name || !categoryName || !amount || !type) {
+            setHeaderMismatch(true)
         }
         // duplicate matches
-        else if (new Set([date, categoryName, amount, type]).size !== 4) {
-            alert('matching duplicate headers')
+        else if (new Set([date, name, categoryName, amount, type]).size !== 5) {
+            setDuplicateHeader(true)
         }
         else {
             // mapping columns to columns found in csv file
             const map = {
                 date: headers.indexOf(date),
+                name: headers.indexOf(name),
                 categoryName: headers.indexOf(categoryName),
                 amount: headers.indexOf(amount),
                 type: headers.indexOf(type),
@@ -103,12 +119,15 @@ export default ({ open, onClose }) => {
                 headers: { Authorization: `JWT ${token}` }
             })
                 .then(res => {
-                    console.log('Upload done', res.data.message)
-                    window.location.reload()
+                    console.log(res.data.message)
+                    setUploadSuccess(true)
+                    getActivities()
+                    onClose()
                 })
                 .catch(error => {
-                    alert(error)
-                    window.location.reload()
+                    setUploadError(true)
+                    getActivities()
+                    onClose()
                 })
         }
 
@@ -116,26 +135,68 @@ export default ({ open, onClose }) => {
 
     return (
         <>
-            <Dialog open={open ? open : false} onClose={onClose}>
+            <Dialog 
+                open={open ? open : false}
+                onClose={() => {
+                    // unmount HeaderMatching to remove file
+                    setConfirmHeaders(false)
+                    onClose()
+                }}
+            >
                 <DialogTitle style={{ backgroundColor: theme.palette.primary.main, color: "white" }}>
-                    Upload CSV
-                    <IconButton color="secondary" onClick={onClose} style={{ position: 'absolute', top: 0, right: 0 }}>
+                    {confirmHeaders ? 'Please match the following' : 'Upload CSV'}
+                    <IconButton onClick={onClose} style={{ position: 'absolute', top: 0, right: 0 }}>
                         <CancelIcon />
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
                     {
                         confirmHeaders ?
-                            <HeaderMatching 
+                            <HeaderMatching
                                 headers={headers}
-                                date={date} categoryName={categoryName} amount={amount} type={type}
-                                setDate={setDate} setCategoryName={setCategoryName} setAmount={setAmount} setType={setType}
+                                date={date} name={name} categoryName={categoryName} amount={amount} type={type}
+                                setDate={setDate} setName={setName} setCategoryName={setCategoryName} setAmount={setAmount} setType={setType}
+                                submitHandler={submitHandler}
                             />
                             :
-                            <Upload uploadHandler={uploadHandler}/>
+                            <Upload uploadHandler={uploadHandler} />
                     }
                 </DialogContent>
             </Dialog>
+            <ErrorSnackbar 
+                open={emptyCells} onClose={() => { setEmptyCells(false) }} severity={'error' }
+                message={'Empty cells detected.'}
+            />
+            <ErrorSnackbar
+                open={duplicateCol} onClose={() => { setDuplicateCol(false) }} severity={'error'}
+                message={'Duplicate columns detected.'}
+            />
+            <ErrorSnackbar
+                open={failedToReadFile} onClose={() => { setFailedToReadFile(false) }} severity={'error'}
+                message={'Failed to read file.'}
+            />
+
+            <ErrorSnackbar
+                open={noFile} onClose={() => { setNoFile(false) }} severity={'error'}
+                message={'No file found.'}
+            />
+            <ErrorSnackbar
+                open={headerMismatch} onClose={() => { setHeaderMismatch(false) }} severity={'error'}
+                message={'Headers are not all matched.'}
+            />
+            <ErrorSnackbar
+                open={DuplicateHeader} onClose={() => { setDuplicateHeader(false) }} severity={'error'}
+                message={'Duplicate header match detected.'}
+            />
+            <ErrorSnackbar
+                open={UploadError} onClose={() => { setUploadError(false) }} severity={'error'}
+                message={'Upload error.'}
+            />
+            <ErrorSnackbar
+                open={UploadSuccess} onClose={() => { setUploadSuccess(false) }} severity={'success'}
+                message={'CSV file uploaded successfully!'}
+            />
+
         </>
     )
 }

@@ -4,20 +4,20 @@ import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import DialogActions from '@material-ui/core/DialogActions'
+import Button from '@material-ui/core/Button'
 
-export default ({ headers, date, categoryName, amount, type, setDate, setCategoryName, setAmount, setType }) => {
+
+export default ({ submitHandler, headers, date, name, categoryName, amount, type, setDate, setName, setCategoryName, setAmount, setType }) => {
 
     return (
         <>
-            <Typography variant="h5" align="center" color="primary">Please match the following:</Typography>
-            <br />
             <Grid container spacing={3}>
                 <Grid item xs={3}>
                     {/* empty for spacing purposes */}
-                    <Typography align="left" color="primary"></Typography>
                 </Grid>
                 <Grid item xs={9}>
-                    <Typography align="center" color="primary">Columns found in CSV file</Typography>
+                    <Typography variant="h5" align="center" color="primary">Columns found in CSV file</Typography>
                 </Grid>
 
                 <Grid item xs={3}>
@@ -26,6 +26,17 @@ export default ({ headers, date, categoryName, amount, type, setDate, setCategor
                 <Grid item xs={9}>
                     <FormControl variant="outlined" fullWidth>
                         <Select onChange={e => setDate(e.target.value)} value={date}>
+                            {headers.map((element, i) => <MenuItem key={i} value={element}>{element}</MenuItem>)}
+                        </Select>
+                    </FormControl>
+                </Grid>
+
+                <Grid item xs={3}>
+                    <Typography variant="h6" align="left" color="primary">Name:</Typography>
+                </Grid>
+                <Grid item xs={9}>
+                    <FormControl variant="outlined" fullWidth>
+                        <Select onChange={e => setName(e.target.value)} value={name}>
                             {headers.map((element, i) => <MenuItem key={i} value={element}>{element}</MenuItem>)}
                         </Select>
                     </FormControl>
@@ -64,6 +75,10 @@ export default ({ headers, date, categoryName, amount, type, setDate, setCategor
                     </FormControl>
                 </Grid>
             </Grid>
+
+            <DialogActions>
+                <Button onClick={submitHandler} size='large' color='primary'>Submit</Button>
+            </DialogActions>
         </>
     )
 }

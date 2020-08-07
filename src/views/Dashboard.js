@@ -3,7 +3,7 @@ import axios from 'axios'
 import Nav from './Components/Nav'
 import ActivityTable from './Components/Data/ActivityTable'
 import { UserContext } from '../UserContext'
-import { Button, ButtonGroup, Typography, Box } from '@material-ui/core'
+import { Button, ButtonGroup, Typography, Box, CircularProgress } from '@material-ui/core'
 import AddActivity from './Components/Data/AddActivity'
 import EditCategory from './Components/Data/EditCategory'
 import ImportCSV from './Components/Data/ImportCSV/ImportCSV'
@@ -54,7 +54,16 @@ export default () => {
         return (
             <>
                 <Nav />
-                <Typography>You must be logged in to access this page.</Typography>
+                {
+                    // if token exists show spinner, else display message
+                    localStorage.getItem('token') ?
+                        <Box align="center">
+                            <CircularProgress size={100} color="primary" />
+                        </Box>
+                        :
+                        <Typography>You must be logged in to access this page.</Typography>
+
+                }
             </>
         )
     }
@@ -77,7 +86,7 @@ export default () => {
             </Box>
             <AddActivity categoriesList={categoriesList} open={showAddActivity} setShowEditCategory={setShowEditCategory} getActivities={getActivities} onClose={() => setShowAddActivity(false)} />
             <EditCategory categoriesList={categoriesList} open={showEditCategory} getCategories={getCategories} getActivities={getActivities} onClose={() => setShowEditCategory(false)} />
-            <ImportCSV open={showUploadCSV} onClose={() => { setShowUploadCSV(false) }} getActivities={getActivities} getCategories={getCategories}/>
+            <ImportCSV open={showUploadCSV} onClose={() => { setShowUploadCSV(false) }} getActivities={getActivities} getCategories={getCategories} />
         </>
     )
 }

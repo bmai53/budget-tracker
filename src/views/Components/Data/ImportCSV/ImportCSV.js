@@ -53,7 +53,7 @@ export default ({ open, onClose, getActivities, getCategories }) => {
                 }
 
                 // check for empty cells
-                parseResults.data.map(row => {
+                parseResults.data.forEach(row => {
                     if (row.indexOf('') !== -1) {
                         setEmptyCells(true)
                         safeToContinue = false

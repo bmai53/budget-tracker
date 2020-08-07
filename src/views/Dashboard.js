@@ -77,7 +77,7 @@ export default () => {
             </Box>
             <AddActivity categoriesList={categoriesList} open={showAddActivity} setShowEditCategory={setShowEditCategory} getActivities={getActivities} onClose={() => setShowAddActivity(false)} />
             <EditCategory categoriesList={categoriesList} open={showEditCategory} getCategories={getCategories} getActivities={getActivities} onClose={() => setShowEditCategory(false)} />
-            <ImportCSV open={showUploadCSV} onClose={() => { setShowUploadCSV(false) }} getActivities={getActivities}/>
+            <ImportCSV open={showUploadCSV} onClose={() => { setShowUploadCSV(false) }} getActivities={getActivities} getCategories={getCategories}/>
         </>
     )
 }

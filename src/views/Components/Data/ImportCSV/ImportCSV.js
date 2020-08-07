@@ -9,7 +9,7 @@ import Upload from './Upload'
 import ErrorSnackbar from './ErrorSnackbar'
 
 
-export default ({ open, onClose, getActivities }) => {
+export default ({ open, onClose, getActivities, getCategories }) => {
     const [parsedFile, setParsedFile] = useState([])
     const [headers, setHeaders] = useState([])                      // headers from file
     const [confirmHeaders, setConfirmHeaders] = useState(false)     // display header confirmation form
@@ -122,11 +122,13 @@ export default ({ open, onClose, getActivities }) => {
                     console.log(res.data.message)
                     setUploadSuccess(true)
                     getActivities()
+                    getCategories()
                     onClose()
                 })
                 .catch(error => {
                     setUploadError(true)
                     getActivities()
+                    getCategories()
                     onClose()
                 })
         }

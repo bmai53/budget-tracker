@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import theme from '../../../theme'
-import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField } from '@material-ui/core'
+import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField, CircularProgress } from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
@@ -11,6 +11,10 @@ export default ({ open, onClose }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+
+    // wait for server response to register POST
+    const [waiting, setWaiting] = useState(false)
+
     // snackbars
     const [showSuccess, setShowSuccess] = useState(false)
     const [showError, setShowError] = useState(false)
@@ -19,6 +23,7 @@ export default ({ open, onClose }) => {
 
 
     const handleRegister = useCallback(() => {
+        setWaiting(true)
         if (password === confirmPassword) {
             axios.post(process.env.REACT_APP_BACKEND_URL + 'auth/register', {
                 email: email,
@@ -30,11 +35,13 @@ export default ({ open, onClose }) => {
                     setConfirmPassword('')
                     setShowSuccess(true)
                     onClose()
+                    setWaiting(false)
                 })
                 .catch((error) => {
                     if (error.response) {
                         error.response.status === 409 ? setShowEmailError(true) : setShowError(true)
                     }
+                    setWaiting(false)
                 })
         }
         else {
@@ -69,7 +76,7 @@ export default ({ open, onClose }) => {
                     <TextField label='Password' type='password' fullWidth value={password} onChange={(event) => { setPassword(event.target.value) }} />
                     <TextField label='Password' type='password' fullWidth value={confirmPassword} onChange={(event) => { setConfirmPassword(event.target.value) }} />
                     <DialogActions>
-                        <Button onClick={handleRegister} color='primary'>Register</Button>
+                        <Button onClick={handleRegister} color='primary'>{waiting ? <CircularProgress size={25} color="primary" /> : 'Register'}</Button>
                     </DialogActions>
                 </DialogContent>
             </Dialog>

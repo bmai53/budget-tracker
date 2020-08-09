@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from 'react'
 import axios from 'axios'
 import theme from '../../../theme'
 import { UserContext } from '../../../UserContext'
-import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField } from '@material-ui/core'
+import { DialogTitle, Dialog, DialogActions, DialogContent, Button, IconButton, TextField, CircularProgress } from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
@@ -13,12 +13,15 @@ export default ({ open, onClose }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    // wait for server response to login POST
+    const [waiting, setWaiting] = useState(false)
+
     // snackbars
     const [showSuccess, setShowSuccess] = useState(false)
     const [showError, setShowError] = useState(false)
 
-
     const handleLogin = useCallback(() => {
+        setWaiting(true)
         axios.post(process.env.REACT_APP_BACKEND_URL + 'auth/login', {
             email: email,
             password: password
@@ -27,10 +30,12 @@ export default ({ open, onClose }) => {
                 localStorage.setItem('token', response.data.token)
                 setUser(response.data.auth)
                 setShowSuccess(true)
+                setWaiting(false)
                 onClose()
             })
             .catch((error) => {
                 setShowError(true)
+                setWaiting(false)
             })
     }, [email, password, onClose, setUser])
 
@@ -60,10 +65,12 @@ export default ({ open, onClose }) => {
                     <TextField autoFocus label='Email' type='email' fullWidth value={email} onChange={(event) => { setEmail(event.target.value) }} />
                     <TextField label='Password' type='password' fullWidth value={password} onChange={(event) => { setPassword(event.target.value) }} />
                     <DialogActions>
-                        <Button onClick={handleLogin} color='primary'>Login</Button>
+
+                        <Button onClick={handleLogin} color='primary'>{waiting ? <CircularProgress size={25} color="primary" /> : 'Login' }</Button>
                     </DialogActions>
                 </DialogContent>
             </Dialog>
+
 
             <Snackbar open={showSuccess} autoHideDuration={3000} onClose={() => { setShowSuccess(false) }}>
                 <Alert onClose={() => { setShowSuccess(false) }} severity="success">

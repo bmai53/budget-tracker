@@ -74,7 +74,7 @@ export default ({ open, onClose }) => {
                 <DialogContent>
                     <TextField autoFocus label='Email' type='email' fullWidth value={email} onChange={(event) => { setEmail(event.target.value) }} />
                     <TextField label='Password' type='password' fullWidth value={password} onChange={(event) => { setPassword(event.target.value) }} />
-                    <TextField label='Password' type='password' fullWidth value={confirmPassword} onChange={(event) => { setConfirmPassword(event.target.value) }} />
+                    <TextField label='Confirm Password' type='password' fullWidth value={confirmPassword} onChange={(event) => { setConfirmPassword(event.target.value) }} />
                     <DialogActions>
                         <Button onClick={handleRegister} color='primary'>{waiting ? <CircularProgress size={25} color="primary" /> : 'Register'}</Button>
                     </DialogActions>

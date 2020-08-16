@@ -26,7 +26,7 @@ export default () => {
     const handleLogout = () => {
         setUser(null);
         localStorage.removeItem('token');
-        window.location.href = "/home"
+        window.location.href = process.env.ENV === 'DEV' ? "/home" : "/budget-tracker/"
     }
 
     const renderButtons = !user ?

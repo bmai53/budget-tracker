@@ -20,7 +20,7 @@ export default () => {
         {
           user ?
             <Route render={() => <Redirect to="/dashboard" />} /> :
-            <Route render={() => <Redirect to="/" />} />
+            <Route render={() => <Redirect to="/home" />} />
         }
       </Switch>
     </UserContext.Provider>

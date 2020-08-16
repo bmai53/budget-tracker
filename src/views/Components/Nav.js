@@ -26,7 +26,7 @@ export default () => {
     const handleLogout = () => {
         setUser(null);
         localStorage.removeItem('token');
-        window.location.reload()
+        window.location.href = "/home"
     }
 
     const renderButtons = !user ?
@@ -52,7 +52,9 @@ export default () => {
                                         <GitHubIcon fontSize='large' color='secondary' />
                                     </IconButton>
                                 </Tooltip>
-                                <Typography variant='h4'>Budget Tracker</Typography>
+                                <Button style={{ textTransform: 'none' }} color='inherit' component={NavLink} to='/home' >
+                                    <Typography variant='h4'>Budget Tracker</Typography>
+                                </Button>
                             </div>
                         </Grid>
                         <Grid item xs={4} style={{ textAlign: 'right' }}>

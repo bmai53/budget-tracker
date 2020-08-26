@@ -26,7 +26,12 @@ export default ({ open, onClose, categoriesList, getActivities, setShowEditCateg
                 Authorization: `JWT ${token}`
             }
         })
-            .then((response) => {
+            .then(() => {
+                setName('')
+                setAmount(0)
+                setDate('')
+                setCategoryId('')
+                setType('')
                 getActivities()
                 onClose()
             })

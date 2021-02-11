@@ -10,9 +10,6 @@ const theme = createMuiTheme({
     secondary: {
       main: "#FFFFFF", // White
     },
-    darkGreen: {
-      main: "#2a8e2a",
-    },
     positive: {
       main: "#4caf50", // default palette success
     },

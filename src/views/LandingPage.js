@@ -11,25 +11,34 @@ const styles = {
     backgroundSize: "cover",
   },
 
+  boxMobile: {
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${landing})`,
+    backgroundSize: "cover",
+  },
+
   text: {
     color: "#FFF",
   },
 };
 
 export default () => {
-  // const [width, setWidth] = useState(window.innerWidth);
+  const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     const { innerWidth, innerHeight } = window;
-  //     setWidth(innerWidth);
-  //   };
-  //   window.addEventListener("resize", handleResize);
+  useEffect(() => {
+    const handleResize = () => {
+      const { innerWidth, innerHeight } = window;
+      setWidth(innerWidth);
+      setHeight(innerHeight);
+    };
+    window.addEventListener("resize", handleResize);
 
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   // const data = [
   //   { month: "J", income: 1500, expense: 1200 },
@@ -49,20 +58,32 @@ export default () => {
   return (
     <>
       <Nav />
-      <div style={styles.box}>
-        <div>
+      {width > 480 ? (
+        <div style={styles.box}>
+          <div>
+            <Typography
+              variant='h1'
+              align='center'
+              style={{ ...styles.text, paddingTop: "200px" }}
+            >
+              Welcome to Budget Tracker
+            </Typography>
+            <Typography variant='h3' align='center' style={styles.text}>
+              Login or sign up to start!
+            </Typography>
+          </div>
+        </div>
+      ) : (
+        <div style={styles.box}>
           <Typography
-            variant='h1'
+            variant='h2'
             align='center'
-            style={{ ...styles.text, paddingTop: "200px" }}
+            style={{ ...styles.text, paddingTop: "100px" }}
           >
-            Welcome to Budget Tracker
-          </Typography>
-          <Typography variant='h3' align='center' style={styles.text}>
-            Login or sign up to start!
+            Budget Tracker
           </Typography>
         </div>
-      </div>
+      )}
     </>
   );
 };

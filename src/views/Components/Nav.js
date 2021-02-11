@@ -7,12 +7,18 @@ import {
   IconButton,
   Grid,
   Typography,
+  Collapse,
+  Card,
+  List,
+  ListItem,
+  Hidden,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
 import { UserContext } from "../../UserContext";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import MenuIcon from "@material-ui/icons/Menu";
 import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,12 +26,26 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     marginBottom: theme.spacing(5),
   },
+  menu: {
+    marginTop: -theme.spacing(6),
+    backgroundColor: theme.palette.primary.main,
+  },
+  menuCard: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  menuList: {
+    float: "right",
+  },
+  menuListButton: {
+    color: "white",
+  },
 }));
 
 export default () => {
   const { user, setUser } = useContext(UserContext);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const classes = useStyles();
 
@@ -105,12 +125,32 @@ export default () => {
                 </Button>
               </div>
             </Grid>
-            <Grid item xs={4} style={{ textAlign: "right" }}>
-              {renderButtons}
-            </Grid>
+            <Hidden smDown>
+              <Grid item xs={4} style={{ textAlign: "right" }}>
+                {renderButtons}
+              </Grid>
+            </Hidden>
+            <Hidden smUp>
+              <Grid item xs={4} style={{ textAlign: "right" }}>
+                <IconButton onClick={() => setShowMenu(!showMenu)}>
+                  <MenuIcon fontSize='large' color='secondary' />
+                </IconButton>
+              </Grid>
+            </Hidden>
           </Grid>
         </Toolbar>
       </AppBar>
+      {showMenu && (
+        <Collapse in={showMenu} className={classes.menu}>
+          <Card className={classes.menuCard}>
+            <List className={classes.menuList}>
+              {renderButtons.map((b) => (
+                <ListItem className={classes.menuListButton}>{b}</ListItem>
+              ))}
+            </List>
+          </Card>
+        </Collapse>
+      )}
       <Login open={showLogin} onClose={() => setShowLogin(false)} />
       <Register open={showRegister} onClose={() => setShowRegister(false)} />
     </>

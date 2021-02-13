@@ -50,7 +50,7 @@ export default () => {
 
   const classes = useStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   const handleLogout = () => {
     setUser(null);
@@ -122,7 +122,7 @@ export default () => {
             justify='space-between'
             alignItems='center'
           >
-            <Grid item xs={8}>
+            <Grid item xs={8} sm={6}>
               <div style={{ display: "inline-flex", alignItems: "center" }}>
                 <Button
                   style={{ textTransform: "none" }}
@@ -137,13 +137,13 @@ export default () => {
                 </Button>
               </div>
             </Grid>
-            <Hidden smDown>
-              <Grid item xs={4} style={{ textAlign: "right" }}>
+            <Hidden xsDown>
+              <Grid item xs={4} sm={6} style={{ textAlign: "right" }}>
                 {renderButtons}
               </Grid>
             </Hidden>
             <Hidden smUp>
-              <Grid item xs={4} style={{ textAlign: "right" }}>
+              <Grid item xs={4} sm={6} style={{ textAlign: "right" }}>
                 <IconButton onClick={() => setShowMenu(!showMenu)}>
                   <MenuIcon fontSize='large' color='secondary' />
                 </IconButton>

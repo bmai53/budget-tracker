@@ -14,12 +14,13 @@ import {
   Hidden,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
 import { UserContext } from "../../UserContext";
-import GitHubIcon from "@material-ui/icons/GitHub";
+import EcoIcon from "@material-ui/icons/Eco";
 import MenuIcon from "@material-ui/icons/Menu";
-import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,6 +49,8 @@ export default () => {
   const [showMenu, setShowMenu] = useState(false);
 
   const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleLogout = () => {
     setUser(null);
@@ -58,6 +61,15 @@ export default () => {
 
   const renderButtons = !user
     ? [
+        <Button
+          color='inherit'
+          onClick={() =>
+            window.open("https://github.com/bmai53/budget-tracker", "_blank")
+          }
+          key={"github"}
+        >
+          GitHub Repo
+        </Button>,
         <Button
           color='inherit'
           onClick={() => {
@@ -78,6 +90,15 @@ export default () => {
         </Button>,
       ]
     : [
+        <Button
+          color='inherit'
+          onClick={() =>
+            window.open("https://github.com/bmai53/budget-tracker", "_blank")
+          }
+          key={"github"}
+        >
+          GitHub Repo
+        </Button>,
         <Button
           color='inherit'
           component={NavLink}
@@ -103,25 +124,16 @@ export default () => {
           >
             <Grid item xs={8}>
               <div style={{ display: "inline-flex", alignItems: "center" }}>
-                <Tooltip title='Github Repo'>
-                  <IconButton
-                    onClick={() =>
-                      window.open(
-                        "https://github.com/bmai53/budget-tracker",
-                        "_blank"
-                      )
-                    }
-                  >
-                    <GitHubIcon fontSize='large' color='secondary' />
-                  </IconButton>
-                </Tooltip>
                 <Button
                   style={{ textTransform: "none" }}
                   color='inherit'
                   component={NavLink}
                   to='/home'
                 >
-                  <Typography variant='h4'>Budget Tracker</Typography>
+                  <Typography variant={isMobile ? "h6" : "h4"}>
+                    Budget Tracker
+                    <EcoIcon fontSize='inherit' color='secondary' />
+                  </Typography>
                 </Button>
               </div>
             </Grid>

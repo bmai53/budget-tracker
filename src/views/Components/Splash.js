@@ -1,22 +1,34 @@
 import React from "react";
 import { Box, Typography, Grid, CircularProgress } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import EcoIcon from "@material-ui/icons/Eco";
 
 const useStyles = makeStyles((theme) => ({
   splash: {
-    paddingTop: "25%",
-    height: "100vh",
+    paddingTop: "40%",
+    width: "100wh",
+    height: "60%",
+    lineHeight: "25vh",
+    [theme.breakpoints.down("sm")]: {
+      lineHeight: "250px",
+    },
   },
 }));
 
 export default () => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Box align='center' className={classes.splash}>
-      <Typography variant='h1' align='center'>
+      <Typography variant={isMobile ? "h4" : "h1"} color='primary'>
         Budget Tracker
+        <EcoIcon fontSize='inherit' color='primary' />
       </Typography>
-      <CircularProgress size={100} color='primary' />
+
+      <CircularProgress size={isMobile ? 100 : 200} color='primary' />
     </Box>
   );
 };

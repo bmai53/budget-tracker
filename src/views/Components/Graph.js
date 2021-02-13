@@ -3,7 +3,8 @@ import { LineChart, Line, YAxis, XAxis, CartesianGrid } from "recharts";
 
 export default ({
   data,
-  style,
+  key1,
+  key2,
   xDataKey,
   yDataKey,
   xHide = true,
@@ -13,6 +14,7 @@ export default ({
   width = 500,
   height = 300,
   grid = false,
+  style = {},
 }) => {
   return (
     <LineChart width={width} height={height} data={data} style={style}>
@@ -33,8 +35,8 @@ export default ({
         }}
       />
       {grid && <CartesianGrid stroke='grey' strokeDasharray='5 5' />}
-      <Line type='monotone' dataKey={xDataKey} stroke={xColor} />
-      <Line type='monotone' dataKey={yDataKey} stroke={yColor} />
+      <Line type='monotone' dataKey={key1} stroke={xColor} />
+      <Line type='monotone' dataKey={key2} stroke={yColor} />
     </LineChart>
   );
 };

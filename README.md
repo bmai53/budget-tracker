@@ -1,6 +1,6 @@
 # Budget Tracker App
 
-<img height="500px" src="https://i.imgur.com/9Qb2LGl.png"/>
+<img height="500px" src="https://i.imgur.com/JQOSJBx.png"/>
 
 Front end for Budget Tracker App. [Click here to visit!](https://bennymai.me/budget-tracker/)
 

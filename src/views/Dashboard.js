@@ -79,6 +79,30 @@ export default () => {
     );
   }
 
+  // activityType = 'income' || 'expense
+  const processActivityCategories = (activityType) => {
+    const arr = activitiesList.filter((a) => a.type === activityType);
+    const map = new Map();
+    const res = [];
+    arr.forEach((a) => {
+      if (map.has(a.category_name)) {
+        map.set(
+          a.category_name,
+          Number(map.get(a.category_name)) + Number(a.amount)
+        );
+      } else {
+        map.set(a.category_name, a.amount);
+      }
+    });
+
+    map.forEach((value, key) => {
+      res.push({ category_name: key, amount: value });
+    });
+
+    // console.log("res", res);
+    return res;
+  };
+
   return (
     <>
       <Nav />
@@ -142,17 +166,15 @@ export default () => {
       />
       <Donut
         data={{
-          labels: activitiesList
-            .filter((a) => a.type === "expense")
-            .map((a) => a.category_name),
+          labels: processActivityCategories("expense").map(
+            (a) => a.category_name
+          ),
           datasets: [
             {
-              data: activitiesList
-                .filter((a) => a.type === "expense")
-                .map((a) => a.amount),
-              backgroundColor: activitiesList
-                .filter((a) => a.type === "expense")
-                .map((a, i) => `rgb(${Math.max(0, 255 - i * 50)}, 0, 0)`),
+              data: processActivityCategories("expense").map((a) => a.amount),
+              backgroundColor: processActivityCategories("expense").map(
+                (a, i) => `rgb(${Math.max(0, 255 - i * 20)}, 100, 100)`
+              ),
               borderWidth: 1,
             },
           ],

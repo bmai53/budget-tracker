@@ -13,7 +13,6 @@ import {
 import AddActivity from "./Components/Data/AddActivity";
 import EditCategory from "./Components/Data/EditCategory";
 import ImportCSV from "./Components/Data/ImportCSV/ImportCSV";
-import Graph from "./Components/Graph";
 
 export default () => {
   const { user } = useContext(UserContext);
@@ -140,7 +139,7 @@ export default () => {
         getActivities={getActivities}
         onClose={() => setShowEditCategory(false)}
       />
-      <Graph data={activitiesList} />
+
       <ImportCSV
         open={showUploadCSV}
         onClose={() => {

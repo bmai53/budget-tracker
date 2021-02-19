@@ -13,7 +13,7 @@ import {
 import AddActivity from "./Components/Data/AddActivity";
 import EditCategory from "./Components/Data/EditCategory";
 import ImportCSV from "./Components/Data/ImportCSV/ImportCSV";
-import { Donut } from "./Components/Graphs";
+import DashboardGraphs from "./DashboardGraphs";
 
 export default () => {
   const { user } = useContext(UserContext);
@@ -79,45 +79,6 @@ export default () => {
     );
   }
 
-  // activityType = 'income' || 'expense
-  const processActivityCategories = (activityType) => {
-    const arr = activitiesList.filter((a) => a.type === activityType);
-    const map = new Map();
-    const data = [];
-    const color = [];
-
-    arr.forEach((a) => {
-      if (map.has(a.category_name)) {
-        map.set(
-          a.category_name,
-          (Number(map.get(a.category_name)) + Number(a.amount)).toFixed(2)
-        );
-      } else {
-        map.set(a.category_name, a.amount);
-      }
-    });
-
-    map.forEach((value, key) => {
-      data.push({ category_name: key, amount: value });
-    });
-
-    data.forEach((d, i) => {
-      color.push(
-        `rgb(${
-          activityType === "income" ? 100 : 255 - i * (150 / data.length)
-        }, ${
-          activityType === "income" ? 255 - i * (150 / data.length) : 100
-        }, 100)`
-      );
-    });
-
-    return {
-      data: data,
-      length: data.length,
-      color: color,
-    };
-  };
-
   return (
     <>
       <Nav />
@@ -179,38 +140,7 @@ export default () => {
         getActivities={getActivities}
         onClose={() => setShowEditCategory(false)}
       />
-      <Donut
-        data={{
-          labels: processActivityCategories("expense").data.map(
-            (a) => a.category_name
-          ),
-          datasets: [
-            {
-              data: processActivityCategories("expense").data.map(
-                (a) => a.amount
-              ),
-              backgroundColor: processActivityCategories("expense").color,
-              borderWidth: 1,
-            },
-          ],
-        }}
-      />
-      <Donut
-        data={{
-          labels: processActivityCategories("income").data.map(
-            (a) => a.category_name
-          ),
-          datasets: [
-            {
-              data: processActivityCategories("income").data.map(
-                (a) => a.amount
-              ),
-              backgroundColor: processActivityCategories("income").color,
-              borderWidth: 1,
-            },
-          ],
-        }}
-      />
+      <DashboardGraphs activitiesList={activitiesList} />
       <ImportCSV
         open={showUploadCSV}
         onClose={() => {

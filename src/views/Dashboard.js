@@ -13,6 +13,7 @@ import {
 import AddActivity from "./Components/Data/AddActivity";
 import EditCategory from "./Components/Data/EditCategory";
 import ImportCSV from "./Components/Data/ImportCSV/ImportCSV";
+import { Donut } from "./Components/Graphs";
 
 export default () => {
   const { user } = useContext(UserContext);
@@ -139,7 +140,24 @@ export default () => {
         getActivities={getActivities}
         onClose={() => setShowEditCategory(false)}
       />
-
+      <Donut
+        data={{
+          labels: activitiesList
+            .filter((a) => a.type === "expense")
+            .map((a) => a.category_name),
+          datasets: [
+            {
+              data: activitiesList
+                .filter((a) => a.type === "expense")
+                .map((a) => a.amount),
+              backgroundColor: activitiesList
+                .filter((a) => a.type === "expense")
+                .map((a, i) => `rgb(${Math.max(0, 255 - i * 50)}, 0, 0)`),
+              borderWidth: 1,
+            },
+          ],
+        }}
+      />
       <ImportCSV
         open={showUploadCSV}
         onClose={() => {

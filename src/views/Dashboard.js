@@ -83,12 +83,14 @@ export default () => {
   const processActivityCategories = (activityType) => {
     const arr = activitiesList.filter((a) => a.type === activityType);
     const map = new Map();
-    const res = [];
+    const data = [];
+    const color = [];
+
     arr.forEach((a) => {
       if (map.has(a.category_name)) {
         map.set(
           a.category_name,
-          Number(map.get(a.category_name)) + Number(a.amount)
+          (Number(map.get(a.category_name)) + Number(a.amount)).toFixed(2)
         );
       } else {
         map.set(a.category_name, a.amount);
@@ -96,11 +98,24 @@ export default () => {
     });
 
     map.forEach((value, key) => {
-      res.push({ category_name: key, amount: value });
+      data.push({ category_name: key, amount: value });
     });
 
-    // console.log("res", res);
-    return res;
+    data.forEach((d, i) => {
+      color.push(
+        `rgb(${
+          activityType === "income" ? 100 : 255 - i * (150 / data.length)
+        }, ${
+          activityType === "income" ? 255 - i * (150 / data.length) : 100
+        }, 100)`
+      );
+    });
+
+    return {
+      data: data,
+      length: data.length,
+      color: color,
+    };
   };
 
   return (
@@ -166,15 +181,31 @@ export default () => {
       />
       <Donut
         data={{
-          labels: processActivityCategories("expense").map(
+          labels: processActivityCategories("expense").data.map(
             (a) => a.category_name
           ),
           datasets: [
             {
-              data: processActivityCategories("expense").map((a) => a.amount),
-              backgroundColor: processActivityCategories("expense").map(
-                (a, i) => `rgb(${Math.max(0, 255 - i * 20)}, 100, 100)`
+              data: processActivityCategories("expense").data.map(
+                (a) => a.amount
               ),
+              backgroundColor: processActivityCategories("expense").color,
+              borderWidth: 1,
+            },
+          ],
+        }}
+      />
+      <Donut
+        data={{
+          labels: processActivityCategories("income").data.map(
+            (a) => a.category_name
+          ),
+          datasets: [
+            {
+              data: processActivityCategories("income").data.map(
+                (a) => a.amount
+              ),
+              backgroundColor: processActivityCategories("income").color,
               borderWidth: 1,
             },
           ],

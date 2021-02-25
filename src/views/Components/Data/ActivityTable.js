@@ -50,6 +50,9 @@ export default ({
   setTypeFilter,
   dateFilter,
   setDateFilter,
+  showFilters,
+  setShowFilters,
+  getfilteredList,
   loading,
 }) => {
   const [data, setData] = useState([]);
@@ -63,26 +66,7 @@ export default ({
   const [editRow, setEditRow] = useState(); // store data of row to edit
 
   useEffect(() => {
-    let filteredData = activitiesList;
-
-    if (categoryFilter !== "all") {
-      filteredData = filteredData.filter(
-        (a) => a.category_name === categoryFilter
-      );
-    }
-    if (typeFilter !== "all") {
-      filteredData = filteredData.filter((a) => a.type === typeFilter);
-    }
-    if (dateFilter !== 0) {
-      const today = new Date();
-      // using getDate to calculate date 0, 30, 60, 180, 365 days ago
-      const duration = new Date(
-        new Date().setDate(today.getDate() - dateFilter)
-      );
-      filteredData = filteredData.filter((a) => new Date(a.date) >= duration);
-    }
-
-    setData(filteredData);
+    setData(getfilteredList(activitiesList));
   }, [activitiesList, categoriesList, categoryFilter, typeFilter, dateFilter]);
 
   const handleChangePage = (event, newPage) => {

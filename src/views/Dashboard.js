@@ -21,17 +21,39 @@ export default () => {
   const [activitiesList, setActivitiesList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
 
-  //filters
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
-  const [dateFilter, setDateFilter] = useState(0);
-
   // dialogs
   const [showFilters, setShowFilters] = useState(false);
   const [showAddActivity, setShowAddActivity] = useState(false);
   const [showEditCategory, setShowEditCategory] = useState(false);
   const [showUploadCSV, setShowUploadCSV] = useState(false);
 
+  //filters
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState(0);
+
+  const getfilteredList = (list) => {
+    let filteredData = list;
+
+    if (categoryFilter !== "all") {
+      filteredData = filteredData.filter(
+        (a) => a.category_name === categoryFilter
+      );
+    }
+    if (typeFilter !== "all") {
+      filteredData = filteredData.filter((a) => a.type === typeFilter);
+    }
+    if (dateFilter !== 0) {
+      const today = new Date();
+      // using getDate to calculate date 0, 30, 60, 180, 365 days ago
+      const duration = new Date(
+        new Date().setDate(today.getDate() - dateFilter)
+      );
+      filteredData = filteredData.filter((a) => new Date(a.date) >= duration);
+    }
+
+    return filteredData;
+  };
   const getActivities = () => {
     setLoading(true);
     const token = localStorage.getItem("token");
@@ -99,6 +121,9 @@ export default () => {
           setTypeFilter={setTypeFilter}
           dateFilter={dateFilter}
           setDateFilter={setDateFilter}
+          showFilters={showFilters}
+          setShowFilters={setShowFilters}
+          getfilteredList={getfilteredList}
           loading={loading}
         />
       </Box>
@@ -152,7 +177,7 @@ export default () => {
         getActivities={getActivities}
         onClose={() => setShowEditCategory(false)}
       />
-      <DashboardGraphs activitiesList={activitiesList} />
+      <DashboardGraphs activitiesList={getfilteredList(activitiesList)} />
       <ImportCSV
         open={showUploadCSV}
         onClose={() => {

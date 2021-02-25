@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Donut } from "./Components/Graphs";
-import { Grid, Typography } from "@material-ui/core";
+import { Card, Grid, Typography } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export default ({ activitiesList }) => {
   // activityType = 'income' || 'expense
@@ -49,51 +51,69 @@ export default ({ activitiesList }) => {
       textAlign: "center",
     },
   };
-  return (
-    <Grid container style={{ marginTop: "50px" }}>
-      <Grid item {...gridItemProps}>
-        <Typography variant='h4' gutterBottom>
-          Expenses
-        </Typography>
-        <Donut
-          data={{
-            labels: processActivityCategories("expense").data.map(
-              (a) => a.category_name
-            ),
-            datasets: [
-              {
-                data: processActivityCategories("expense").data.map(
-                  (a) => a.amount
-                ),
-                backgroundColor: processActivityCategories("expense").color,
-                borderWidth: 1,
-              },
-            ],
-          }}
-        />
-      </Grid>
-      <Grid item {...gridItemProps}>
-        <Typography variant='h4' gutterBottom>
-          Income
-        </Typography>
 
-        <Donut
-          data={{
-            labels: processActivityCategories("income").data.map(
-              (a) => a.category_name
-            ),
-            datasets: [
-              {
-                data: processActivityCategories("income").data.map(
-                  (a) => a.amount
-                ),
-                backgroundColor: processActivityCategories("income").color,
-                borderWidth: 1,
-              },
-            ],
-          }}
-        />
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+
+  return (
+    <Card
+      style={
+        isMobile
+          ? {
+              width: "100%",
+            }
+          : {
+              width: "75%",
+              padding: "25px",
+              margin: "50px auto",
+            }
+      }
+    >
+      <Grid container style={{ marginTop: "50px" }}>
+        <Grid item {...gridItemProps}>
+          <Typography variant='h4' gutterBottom>
+            Expenses
+          </Typography>
+          <Donut
+            data={{
+              labels: processActivityCategories("expense").data.map(
+                (a) => a.category_name
+              ),
+              datasets: [
+                {
+                  data: processActivityCategories("expense").data.map(
+                    (a) => a.amount
+                  ),
+                  backgroundColor: processActivityCategories("expense").color,
+                  borderWidth: 1,
+                },
+              ],
+            }}
+          />
+        </Grid>
+        <Grid item {...gridItemProps}>
+          <Typography variant='h4' gutterBottom>
+            Income
+          </Typography>
+
+          <Donut
+            data={{
+              labels: processActivityCategories("income").data.map(
+                (a) => a.category_name
+              ),
+              datasets: [
+                {
+                  data: processActivityCategories("income").data.map(
+                    (a) => a.amount
+                  ),
+                  backgroundColor: processActivityCategories("income").color,
+                  borderWidth: 1,
+                },
+              ],
+            }}
+          />
+        </Grid>
       </Grid>
-    </Grid>
+    </Card>
   );
 };

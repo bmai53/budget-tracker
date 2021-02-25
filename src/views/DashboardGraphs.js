@@ -1,31 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Donut } from "./Components/Graphs";
 import { Card, Grid, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {
+  Donut,
+  LineChart,
+  processActivityCategories,
+} from "./Components/Graphs";
 
 export default ({ activitiesList }) => {
   const [expenseData, setExpenseData] = useState({});
   const [incomeData, setIncomeData] = useState({});
 
   useEffect(() => {
-    // data={{
-    //             labels: processActivityCategories("expense").data.map(
-    //               (a) => a.category_name
-    //             ),
-    //             datasets: [
-    //               {
-    //                 data: processActivityCategories("expense").data.map(
-    //                   (a) => a.amount
-    //                 ),
-    //                 backgroundColor: processActivityCategories("expense").color,
-    //                 borderWidth: 1,
-    //               },
-    //             ],
-    //           }}
-
-    const parsedExpenseData = processActivityCategories("expense");
-    const parsedIncomeData = processActivityCategories("income");
+    const parsedExpenseData = processActivityCategories(
+      activitiesList,
+      "expense"
+    );
+    const parsedIncomeData = processActivityCategories(
+      activitiesList,
+      "income"
+    );
 
     setExpenseData({
       length: parsedExpenseData.data.length,
@@ -52,44 +47,6 @@ export default ({ activitiesList }) => {
     });
   }, [activitiesList]);
 
-  // activityType = 'income' || 'expense
-  const processActivityCategories = (activityType) => {
-    const arr = activitiesList.filter((a) => a.type === activityType);
-    const map = new Map();
-    const data = [];
-    const color = [];
-
-    arr.forEach((a) => {
-      if (map.has(a.category_name)) {
-        map.set(
-          a.category_name,
-          (Number(map.get(a.category_name)) + Number(a.amount)).toFixed(2)
-        );
-      } else {
-        map.set(a.category_name, a.amount);
-      }
-    });
-
-    map.forEach((value, key) => {
-      data.push({ category_name: key, amount: value });
-    });
-
-    data.forEach((d, i) => {
-      color.push(
-        `rgb(${
-          activityType === "income" ? 100 : 255 - i * (150 / data.length)
-        }, ${
-          activityType === "income" ? 255 - i * (150 / data.length) : 100
-        }, 100)`
-      );
-    });
-
-    return {
-      data: data,
-      color: color,
-    };
-  };
-
   const gridItemProps = {
     sm: 6,
     xs: 12,
@@ -103,6 +60,7 @@ export default ({ activitiesList }) => {
 
   return (
     <Card
+      raised
       style={
         isMobile
           ? {
@@ -115,7 +73,7 @@ export default ({ activitiesList }) => {
             }
       }
     >
-      <Grid container style={{ marginTop: "50px" }}>
+      <Grid container>
         <Grid item {...gridItemProps}>
           <Typography variant='h4' gutterBottom>
             Expenses
@@ -137,6 +95,39 @@ export default ({ activitiesList }) => {
           )}
         </Grid>
       </Grid>
+      {/* 
+      <LineChart
+        data={{
+          labels: ["1", "2", "3", "4", "5", "6"],
+          datasets: [
+            {
+              label: "# of Votes",
+              data: [12, 19, 3, 5, 2, 3],
+              fill: false,
+              backgroundColor: "rgb(255, 99, 132)",
+              borderColor: "rgba(255, 99, 132, 0.2)",
+            },
+            {
+              label: "# of yeets",
+              data: [25, 8, 3, 5, 2, 3],
+              fill: false,
+              backgroundColor: "rgb(0, 99, 132)",
+              borderColor: "rgba(0, 99, 132, 0.2)",
+            },
+          ],
+        }}
+        options={{
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                },
+              },
+            ],
+          },
+        }}
+      /> */}
     </Card>
   );
 };

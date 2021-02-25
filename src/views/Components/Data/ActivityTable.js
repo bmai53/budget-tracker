@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
+  Card,
   Typography,
   Table,
   TableBody,
@@ -9,7 +10,6 @@ import {
   TableHead,
   TableRow,
   TablePagination,
-  Paper,
   IconButton,
   Tooltip,
   CircularProgress,
@@ -113,7 +113,7 @@ export default ({
 
   return (
     <>
-      <Paper className={classes.table}>
+      <Card raised className={classes.table}>
         <TableContainer>
           <Table>
             <TableHead>
@@ -211,7 +211,7 @@ export default ({
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
-      </Paper>
+      </Card>
       {
         // test for showEditActivity to remount dialog to reset initial useState()
         editRow && showEditActivity ? (

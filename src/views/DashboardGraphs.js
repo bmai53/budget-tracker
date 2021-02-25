@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import { Card, Grid, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -6,12 +7,15 @@ import {
   Donut,
   LineChart,
   processActivityCategories,
+  processsLineChartData,
 } from "./Components/Graphs";
 
 export default ({ activitiesList }) => {
   const [expenseData, setExpenseData] = useState({});
   const [incomeData, setIncomeData] = useState({});
+  const [lineChartData, setLineChartData] = useState({});
 
+  processsLineChartData(activitiesList);
   useEffect(() => {
     const parsedExpenseData = processActivityCategories(
       activitiesList,
@@ -45,13 +49,27 @@ export default ({ activitiesList }) => {
         },
       ],
     });
+
+    setLineChartData(processsLineChartData(activitiesList));
   }, [activitiesList]);
 
-  const gridItemProps = {
+  const halfGridItemProps = {
     sm: 6,
     xs: 12,
     style: {
       textAlign: "center",
+    },
+  };
+
+  const fullGridItemProps = {
+    side: { sm: 2, xs: 0 },
+    center: {
+      sm: 8,
+      xs: 12,
+      style: {
+        textAlign: "center",
+        paddingTop: "50px",
+      },
     },
   };
 
@@ -74,7 +92,7 @@ export default ({ activitiesList }) => {
       }
     >
       <Grid container>
-        <Grid item {...gridItemProps}>
+        <Grid item {...halfGridItemProps}>
           <Typography variant='h4' gutterBottom>
             Expenses
           </Typography>
@@ -84,7 +102,7 @@ export default ({ activitiesList }) => {
             <Typography variant='h5'>No Data</Typography>
           )}
         </Grid>
-        <Grid item {...gridItemProps}>
+        <Grid item {...halfGridItemProps}>
           <Typography variant='h4' gutterBottom>
             Income
           </Typography>
@@ -94,40 +112,48 @@ export default ({ activitiesList }) => {
             <Typography variant='h5'>No Data</Typography>
           )}
         </Grid>
-      </Grid>
-      {/* 
-      <LineChart
-        data={{
-          labels: ["1", "2", "3", "4", "5", "6"],
-          datasets: [
-            {
-              label: "# of Votes",
-              data: [12, 19, 3, 5, 2, 3],
-              fill: false,
-              backgroundColor: "rgb(255, 99, 132)",
-              borderColor: "rgba(255, 99, 132, 0.2)",
-            },
-            {
-              label: "# of yeets",
-              data: [25, 8, 3, 5, 2, 3],
-              fill: false,
-              backgroundColor: "rgb(0, 99, 132)",
-              borderColor: "rgba(0, 99, 132, 0.2)",
-            },
-          ],
-        }}
-        options={{
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
+        <Grid item {...fullGridItemProps.side} />
+        <Grid item {...fullGridItemProps.center}>
+          {lineChartData.expenseData && lineChartData.incomeData && (
+            <LineChart
+              data={{
+                labels: lineChartData.expenseData.map((e) =>
+                  moment(e.date).format("MM/DD/YY")
+                ),
+                datasets: [
+                  {
+                    label: "Expense",
+                    data: lineChartData.expenseData.map((e) => e.amount),
+                    fill: false,
+                    backgroundColor: "rgb(255, 20, 20)",
+                    borderColor: "rgba(255, 20, 20, 0.5)",
+                  },
+                  {
+                    label: "Income",
+                    data: lineChartData.incomeData.map((i) => i.amount),
+
+                    fill: false,
+                    backgroundColor: "rgb(20, 255, 20)",
+                    borderColor: "rgba(20, 255, 75, 0.5)",
+                  },
+                ],
+              }}
+              options={{
+                scales: {
+                  yAxes: [
+                    {
+                      ticks: {
+                        beginAtZero: true,
+                      },
+                    },
+                  ],
                 },
-              },
-            ],
-          },
-        }}
-      /> */}
+              }}
+            />
+          )}
+        </Grid>
+        <Grid item {...fullGridItemProps.side} />
+      </Grid>
     </Card>
   );
 };

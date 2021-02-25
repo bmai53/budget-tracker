@@ -21,7 +21,13 @@ export default () => {
   const [activitiesList, setActivitiesList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
 
+  //filters
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState(0);
+
   // dialogs
+  const [showFilters, setShowFilters] = useState(false);
   const [showAddActivity, setShowAddActivity] = useState(false);
   const [showEditCategory, setShowEditCategory] = useState(false);
   const [showUploadCSV, setShowUploadCSV] = useState(false);
@@ -87,6 +93,12 @@ export default () => {
           activitiesList={activitiesList}
           categoriesList={categoriesList}
           getActivities={getActivities}
+          categoryFilter={categoryFilter}
+          setCategoryFilter={setCategoryFilter}
+          typeFilter={typeFilter}
+          setTypeFilter={setTypeFilter}
+          dateFilter={dateFilter}
+          setDateFilter={setDateFilter}
           loading={loading}
         />
       </Box>

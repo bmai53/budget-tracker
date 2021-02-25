@@ -40,14 +40,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ activitiesList, categoriesList, getActivities, loading }) => {
+export default ({
+  activitiesList,
+  categoriesList,
+  getActivities,
+  categoryFilter,
+  setCategoryFilter,
+  typeFilter,
+  setTypeFilter,
+  dateFilter,
+  setDateFilter,
+  loading,
+}) => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [showFilters, setShowFilters] = useState(false);
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
-  const [dateFilter, setDateFilter] = useState(0);
+  // const [showFilters, setShowFilters] = useState(false);
+  // const [categoryFilter, setCategoryFilter] = useState("all");
+  // const [typeFilter, setTypeFilter] = useState("all");
+  // const [dateFilter, setDateFilter] = useState(0);
   const [showEditActivity, setShowEditActivity] = useState(false);
   const [editRow, setEditRow] = useState(); // store data of row to edit
 

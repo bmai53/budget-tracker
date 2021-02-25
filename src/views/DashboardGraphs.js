@@ -1,10 +1,57 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Donut } from "./Components/Graphs";
 import { Card, Grid, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export default ({ activitiesList }) => {
+  const [expenseData, setExpenseData] = useState({});
+  const [incomeData, setIncomeData] = useState({});
+
+  useEffect(() => {
+    // data={{
+    //             labels: processActivityCategories("expense").data.map(
+    //               (a) => a.category_name
+    //             ),
+    //             datasets: [
+    //               {
+    //                 data: processActivityCategories("expense").data.map(
+    //                   (a) => a.amount
+    //                 ),
+    //                 backgroundColor: processActivityCategories("expense").color,
+    //                 borderWidth: 1,
+    //               },
+    //             ],
+    //           }}
+
+    const parsedExpenseData = processActivityCategories("expense");
+    const parsedIncomeData = processActivityCategories("income");
+
+    setExpenseData({
+      length: parsedExpenseData.data.length,
+      labels: parsedExpenseData.data.map((e) => e.category_name),
+      datasets: [
+        {
+          data: parsedExpenseData.data.map((e) => e.amount),
+          backgroundColor: parsedExpenseData.color,
+          borderWidth: 1,
+        },
+      ],
+    });
+
+    setIncomeData({
+      length: parsedIncomeData.data.length,
+      labels: parsedIncomeData.data.map((e) => e.category_name),
+      datasets: [
+        {
+          data: parsedIncomeData.data.map((e) => e.amount),
+          backgroundColor: parsedIncomeData.color,
+          borderWidth: 1,
+        },
+      ],
+    });
+  }, [activitiesList]);
+
   // activityType = 'income' || 'expense
   const processActivityCategories = (activityType) => {
     const arr = activitiesList.filter((a) => a.type === activityType);
@@ -39,7 +86,6 @@ export default ({ activitiesList }) => {
 
     return {
       data: data,
-      length: data.length,
       color: color,
     };
   };
@@ -74,44 +120,21 @@ export default ({ activitiesList }) => {
           <Typography variant='h4' gutterBottom>
             Expenses
           </Typography>
-          <Donut
-            data={{
-              labels: processActivityCategories("expense").data.map(
-                (a) => a.category_name
-              ),
-              datasets: [
-                {
-                  data: processActivityCategories("expense").data.map(
-                    (a) => a.amount
-                  ),
-                  backgroundColor: processActivityCategories("expense").color,
-                  borderWidth: 1,
-                },
-              ],
-            }}
-          />
+          {expenseData.length > 0 ? (
+            <Donut data={expenseData} />
+          ) : (
+            <Typography variant='h5'>No Data</Typography>
+          )}
         </Grid>
         <Grid item {...gridItemProps}>
           <Typography variant='h4' gutterBottom>
             Income
           </Typography>
-
-          <Donut
-            data={{
-              labels: processActivityCategories("income").data.map(
-                (a) => a.category_name
-              ),
-              datasets: [
-                {
-                  data: processActivityCategories("income").data.map(
-                    (a) => a.amount
-                  ),
-                  backgroundColor: processActivityCategories("income").color,
-                  borderWidth: 1,
-                },
-              ],
-            }}
-          />
+          {incomeData.length > 0 ? (
+            <Donut data={incomeData} />
+          ) : (
+            <Typography variant='h5'>No Data</Typography>
+          )}
         </Grid>
       </Grid>
     </Card>

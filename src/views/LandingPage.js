@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Nav from "./Components/Nav";
-import { Box, Card, Grid, Typography } from "@material-ui/core";
+import { Box, Card, Divider, Grid, Typography } from "@material-ui/core";
+import { LineChart } from "./Components/Graphs";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import EcoIcon from "@material-ui/icons/Eco";
@@ -8,7 +9,7 @@ import landing from "../images/landing.jpg";
 import budgetTracker from "../images/budget-tracker.png";
 
 const styles = {
-  box: {
+  banner: {
     width: "100%",
     backgroundImage: `url(${landing})`,
     backgroundSize: "cover",
@@ -21,9 +22,34 @@ const styles = {
   },
 
   card: {
+    raised: true,
     padding: "16px 5px",
     marginBottom: "100px",
   },
+
+  divider: {
+    margin: "50px 0",
+  },
+};
+
+const chartData = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+  datasets: [
+    {
+      label: "Expenses",
+      data: [1200, 1700, 900, 700, 500, 600],
+      fill: false,
+      backgroundColor: "rgb(255, 99, 132)",
+      borderColor: "rgba(255, 99, 132, 0.2)",
+    },
+    {
+      label: "Income",
+      data: [500, 600, 1100, 1800, 1500, 1400],
+      fill: false,
+      backgroundColor: "rgb(99, 255, 132)",
+      borderColor: "rgba(99, 255, 132, 0.2)",
+    },
+  ],
 };
 
 export default () => {
@@ -49,7 +75,7 @@ export default () => {
   return (
     <>
       <Nav />
-      <Box style={{ ...styles.box, height: isMobile ? "75vh" : "500px" }}>
+      <Card style={{ ...styles.banner }}>
         <div
           style={{ ...styles.flexBox, height: isMobile ? "250px" : "500px" }}
         >
@@ -70,57 +96,52 @@ export default () => {
             Login or sign up to get started!
           </Typography>
         </div>
-      </Box>
+      </Card>
 
-      {/* <Box
+      <Box
         style={{
-          width: "100%",
+          width: isMobile ? "100%" : "80%",
           margin: "50px auto",
         }}
       >
-        <Card styles={styles.card}>
-          <Grid container>
-            <Grid container md={4} alignItems='center' justify='center'>
-              <Typography variant={!isMobile ? "h4" : "h5"} align='center'>
-                Track income and expenses
-              </Typography>
-            </Grid>
-            <Grid
-              container
-              md={8}
-              alignItems='center'
-              justify='center'
-              style={{ height: "400px" }}
+        <Grid container>
+          <Grid
+            container
+            xs={12}
+            md={4}
+            alignItems='center'
+            justify='flex-start'
+          >
+            <Typography
+              gutterBottom
+              variant={!isMobile ? "h4" : "h5"}
+              align='center'
             >
-              <img src={budgetTracker} height='100%' />
-            </Grid>
+              Track daily income and expenses
+            </Typography>
           </Grid>
-        </Card>
+          <Grid container xs={12} md={8} alignItems='center' justify='flex-end'>
+            <Card raised styles={styles.card}>
+              <img src={budgetTracker} height='500px' />
+            </Card>
+          </Grid>
+        </Grid>
 
-        <Card style={styles.card}>
-          <Grid container>
-            <Grid item xs={12} md={8}>
-              <Graph
-                data={data}
-                key1='income'
-                key2='expense'
-                width={isMobile ? width * 0.9 : width * 0.6}
-                height={height * 0.25}
-                grid
-                style={{
-                  backgroundColor: "#F5FFFA",
-                  padding: "16px",
-                }}
-              />
-            </Grid>
-            <Grid container xs={12} md={4} alignItems='center' justify='center'>
-              <Typography variant={!isMobile ? "h4" : "h5"} align='center'>
-                Track income and expenses
-              </Typography>
-            </Grid>
+        <Divider variant='middle' style={styles.divider} />
+
+        <Grid container>
+          <Grid item xs={12} md={8}>
+            <Card style={styles.card}>
+              <LineChart data={chartData} />
+            </Card>
           </Grid>
-        </Card>
-      </Box> */}
+          <Grid container xs={12} md={4} alignItems='center' justify='center'>
+            <Typography variant={!isMobile ? "h4" : "h5"} align='center'>
+              Visualize trends over time
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
     </>
   );
 };

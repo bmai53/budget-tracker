@@ -114,41 +114,47 @@ export default ({ activitiesList }) => {
         <Grid item {...fullGridItemProps.side} />
         <Grid item {...fullGridItemProps.center}>
           {lineChartData.expenseData && lineChartData.incomeData && (
-            <LineChart
-              data={{
-                labels: lineChartData.expenseData.map((e) =>
-                  moment(e.date).format("MM/DD/YY")
-                ),
-                datasets: [
-                  {
-                    label: "Expense",
-                    data: lineChartData.expenseData.map((e) => e.amount),
-                    fill: false,
-                    backgroundColor: "rgb(255, 20, 20)",
-                    borderColor: "rgba(255, 20, 20, 0.5)",
-                  },
-                  {
-                    label: "Income",
-                    data: lineChartData.incomeData.map((i) => i.amount),
-
-                    fill: false,
-                    backgroundColor: "rgb(20, 255, 20)",
-                    borderColor: "rgba(20, 255, 75, 0.5)",
-                  },
-                ],
-              }}
-              options={{
-                scales: {
-                  yAxes: [
+            <>
+              <Typography variant='h4' gutterBottom>
+                Income and Expenses over Time
+              </Typography>
+              <LineChart
+                data={{
+                  labels: lineChartData.expenseData.map((e) =>
+                    moment(e.date).format("MM/DD/YY")
+                  ),
+                  datasets: [
                     {
-                      ticks: {
-                        beginAtZero: true,
-                      },
+                      label: "Expense",
+                      data: lineChartData.expenseData.map((e) => e.amount),
+                      fill: false,
+                      backgroundColor: "rgb(255, 99, 132)",
+
+                      borderColor: "rgba(255, 99, 132, 0.5)",
+                    },
+                    {
+                      label: "Income",
+                      data: lineChartData.incomeData.map((i) => i.amount),
+
+                      fill: false,
+                      backgroundColor: "rgb(99, 255, 132)",
+                      borderColor: "rgba(99, 255, 132, 0.5)",
                     },
                   ],
-                },
-              }}
-            />
+                }}
+                options={{
+                  scales: {
+                    yAxes: [
+                      {
+                        ticks: {
+                          beginAtZero: true,
+                        },
+                      },
+                    ],
+                  },
+                }}
+              />
+            </>
           )}
         </Grid>
         <Grid item {...fullGridItemProps.side} />

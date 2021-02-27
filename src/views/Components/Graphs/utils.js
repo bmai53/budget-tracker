@@ -72,8 +72,8 @@ export const processsLineChartData = (
     fillGraphDiff(incomeData);
   }
 
-  console.log("expenseData", expenseData);
-  console.log("incomeData", incomeData);
+  // console.log("expenseData", expenseData);
+  // console.log("incomeData", incomeData);
 
   return {
     expenseData,
@@ -86,8 +86,7 @@ const accumulateAmounts = (data) => {
   for (let i = 0; i < data.length; i++) {
     let cur = Number(data[i].amount).toFixed(2);
     total += +cur;
-    console.log(total);
-    data[i].amount = total;
+    data[i] = { ...data[i], amount: total };
   }
 };
 

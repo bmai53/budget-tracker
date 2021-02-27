@@ -15,7 +15,6 @@ export default ({ activitiesList }) => {
   const [incomeData, setIncomeData] = useState({});
   const [lineChartData, setLineChartData] = useState({});
 
-  processsLineChartData(activitiesList);
   useEffect(() => {
     const parsedExpenseData = processActivityCategories(
       activitiesList,
@@ -50,7 +49,7 @@ export default ({ activitiesList }) => {
       ],
     });
 
-    setLineChartData(processsLineChartData(activitiesList));
+    setLineChartData(processsLineChartData(activitiesList, true));
   }, [activitiesList]);
 
   const halfGridItemProps = {
@@ -62,7 +61,7 @@ export default ({ activitiesList }) => {
   };
 
   const fullGridItemProps = {
-    side: { sm: 2, xs: 0 },
+    side: { sm: 2, xs: false },
     center: {
       sm: 8,
       xs: 12,

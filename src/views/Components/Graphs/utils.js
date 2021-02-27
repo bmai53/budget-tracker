@@ -61,21 +61,34 @@ export const processsLineChartData = (
     e.type === "income" ? incomeData.push(e) : expenseData.push(e)
   );
 
+  // cumulative
   if (accumulate) {
     accumulateAmounts(expenseData);
     accumulateAmounts(incomeData);
+  } else {
+    // daily
+    // give data points to amount = null elements
+    fillGraphDiff(expenseData);
+    fillGraphDiff(incomeData);
   }
-  // give data points to amount = null elements
-  fillGraphDiff(expenseData);
-  fillGraphDiff(incomeData);
 
-  //   console.log("expenseData", expenseData);
-  //   console.log("incomeData", incomeData);
+  console.log("expenseData", expenseData);
+  console.log("incomeData", incomeData);
 
   return {
     expenseData,
     incomeData,
   };
+};
+
+const accumulateAmounts = (data) => {
+  let total = 0;
+  for (let i = 0; i < data.length; i++) {
+    let cur = Number(data[i].amount).toFixed(2);
+    total += +cur;
+    console.log(total);
+    data[i].amount = total;
+  }
 };
 
 const fillGraphDiff = (data) => {
@@ -103,5 +116,3 @@ const fillGraphDiff = (data) => {
     }
   }
 };
-
-const accumulateAmounts = (data) => {};

@@ -43,8 +43,8 @@ export const processsLineChartData = (
   // make data points for each income/expense combo
   const extraData = activitiesList.map((a) =>
     a.type === "income"
-      ? { type: "expense", amount: null, date: a.date }
-      : { type: "income", amount: null, date: a.date }
+      ? { type: "expense", amount: 0, date: a.date }
+      : { type: "income", amount: 0, date: a.date }
   );
 
   const extendedList = [...activitiesList, ...extraData].sort((a, b) =>
@@ -68,8 +68,8 @@ export const processsLineChartData = (
   } else {
     // daily
     // give data points to amount = null elements
-    fillGraphDiff(expenseData);
-    fillGraphDiff(incomeData);
+    // fillGraphDiff(expenseData);
+    // fillGraphDiff(incomeData);
   }
 
   // console.log("expenseData", expenseData);
@@ -90,28 +90,28 @@ const accumulateAmounts = (data) => {
   }
 };
 
-const fillGraphDiff = (data) => {
-  let lastAmount = 0;
-  const nullIndicies = [];
+// const fillGraphDiff = (data) => {
+//   let lastAmount = 0;
+//   const nullIndicies = [];
 
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].amount) {
-      if (nullIndicies.length > 0) {
-        // Calc difference between last seen amount and current amount. Draw linear line between.
+//   for (let i = 0; i < data.length; i++) {
+//     if (data[i].amount) {
+//       if (nullIndicies.length > 0) {
+//         // Calc difference between last seen amount and current amount. Draw linear line between.
 
-        let diff = Math.abs(data[i].amount - lastAmount) / nullIndicies.length;
+//         let diff = Math.abs(data[i].amount - lastAmount) / nullIndicies.length;
 
-        nullIndicies.forEach((n, j) => {
-          data[n].amount = Math.max(0, lastAmount - (j + 1) * diff);
-        });
-      }
-      lastAmount = data[i].amount;
-      nullIndicies.length = 0;
-    } else {
-      nullIndicies.push(i);
-      if (i === data.length - 1) {
-        data[i].amount = lastAmount;
-      }
-    }
-  }
-};
+//         nullIndicies.forEach((n, j) => {
+//           data[n].amount = Math.max(0, lastAmount - (j + 1) * diff);
+//         });
+//       }
+//       lastAmount = data[i].amount;
+//       nullIndicies.length = 0;
+//     } else {
+//       nullIndicies.push(i);
+//       if (i === data.length - 1) {
+//         data[i].amount = lastAmount;
+//       }
+//     }
+//   }
+// };

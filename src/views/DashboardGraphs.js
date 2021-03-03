@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import { Card, Grid, Typography } from "@material-ui/core";
+import {
+  Card,
+  Divider,
+  Grid,
+  Typography,
+  TextField,
+  MenuItem,
+} from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
@@ -14,6 +21,7 @@ export default ({ activitiesList }) => {
   const [expenseData, setExpenseData] = useState({});
   const [incomeData, setIncomeData] = useState({});
   const [lineChartData, setLineChartData] = useState({});
+  const [lineChartTotal, setLineChartTotal] = useState(true);
 
   useEffect(() => {
     const parsedExpenseData = processActivityCategories(
@@ -49,8 +57,8 @@ export default ({ activitiesList }) => {
       ],
     });
 
-    setLineChartData(processsLineChartData(activitiesList, true));
-  }, [activitiesList]);
+    setLineChartData(processsLineChartData(activitiesList, lineChartTotal));
+  }, [activitiesList, lineChartTotal]);
 
   const halfGridItemProps = {
     sm: 6,
@@ -67,8 +75,14 @@ export default ({ activitiesList }) => {
       xs: 12,
       style: {
         textAlign: "center",
-        paddingTop: "50px",
       },
+    },
+  };
+
+  const selectProps = {
+    style: {
+      margin: "25px 0",
+      width: "200px",
     },
   };
 
@@ -95,8 +109,8 @@ export default ({ activitiesList }) => {
           <Typography variant='h4' gutterBottom>
             Expenses
           </Typography>
-          {expenseData.length > 0 ? (
-            <Donut data={expenseData} />
+          {incomeData.length > 0 ? (
+            <Donut data={incomeData} />
           ) : (
             <Typography variant='h5'>No Data</Typography>
           )}
@@ -105,19 +119,42 @@ export default ({ activitiesList }) => {
           <Typography variant='h4' gutterBottom>
             Income
           </Typography>
-          {incomeData.length > 0 ? (
-            <Donut data={incomeData} />
+          {expenseData.length > 0 ? (
+            <Donut data={expenseData} />
           ) : (
             <Typography variant='h5'>No Data</Typography>
           )}
         </Grid>
         <Grid item {...fullGridItemProps.side} />
         <Grid item {...fullGridItemProps.center}>
+          <Divider variant='middle' style={{ margin: "50px 0" }} />
+        </Grid>
+        <Grid item {...fullGridItemProps.side} />
+
+        <Grid item {...fullGridItemProps.side} />
+        <Grid item {...fullGridItemProps.center}>
+          <Typography variant='h4'>Income and Expenses over Time</Typography>
+        </Grid>
+        <Grid item {...fullGridItemProps.side} />
+
+        <Grid item {...fullGridItemProps.side} />
+        <Grid item {...fullGridItemProps.center}>
           {lineChartData.expenseData && lineChartData.incomeData && (
             <>
-              <Typography variant='h4' gutterBottom>
-                Income and Expenses over Time
-              </Typography>
+              <TextField
+                value={lineChartTotal}
+                select
+                variant='outlined'
+                onChange={(event) => setLineChartTotal(event.target.value)}
+                {...selectProps}
+              >
+                <MenuItem value={true} key='true'>
+                  Total Over Time
+                </MenuItem>
+                <MenuItem value={false} key='false'>
+                  Daily
+                </MenuItem>
+              </TextField>
               <LineChart
                 data={{
                   labels: lineChartData.expenseData.map((e) =>
@@ -125,20 +162,20 @@ export default ({ activitiesList }) => {
                   ),
                   datasets: [
                     {
-                      label: "Expense",
-                      data: lineChartData.expenseData.map((e) => e.amount),
-                      fill: false,
-                      backgroundColor: "rgb(255, 99, 132)",
-
-                      borderColor: "rgba(255, 99, 132, 0.5)",
-                    },
-                    {
                       label: "Income",
                       data: lineChartData.incomeData.map((i) => i.amount),
 
                       fill: false,
                       backgroundColor: "rgb(99, 255, 132)",
                       borderColor: "rgba(99, 255, 132, 0.5)",
+                    },
+                    {
+                      label: "Expense",
+                      data: lineChartData.expenseData.map((e) => e.amount),
+                      fill: false,
+                      backgroundColor: "rgb(255, 99, 132)",
+
+                      borderColor: "rgba(255, 99, 132, 0.5)",
                     },
                   ],
                 }}

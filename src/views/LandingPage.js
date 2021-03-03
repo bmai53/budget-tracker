@@ -7,6 +7,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import EcoIcon from "@material-ui/icons/Eco";
 import landing from "../images/landing.jpg";
 import budgetTracker from "../images/budget-tracker.png";
+import csv from "../images/csv.png";
 
 const styles = {
   banner: {
@@ -24,7 +25,6 @@ const styles = {
   card: {
     raised: true,
     padding: "16px 5px",
-    marginBottom: "100px",
   },
 
   divider: {
@@ -36,18 +36,18 @@ const chartData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
   datasets: [
     {
-      label: "Expenses",
-      data: [1200, 1700, 900, 700, 500, 600],
-      fill: false,
-      backgroundColor: "rgb(255, 99, 132)",
-      borderColor: "rgba(255, 99, 132, 0.2)",
-    },
-    {
       label: "Income",
       data: [500, 600, 1100, 1800, 1500, 1400],
       fill: false,
       backgroundColor: "rgb(99, 255, 132)",
       borderColor: "rgba(99, 255, 132, 0.2)",
+    },
+    {
+      label: "Expenses",
+      data: [1200, 1700, 900, 700, 500, 600],
+      fill: false,
+      backgroundColor: "rgb(255, 99, 132)",
+      borderColor: "rgba(255, 99, 132, 0.2)",
     },
   ],
 };
@@ -105,19 +105,44 @@ export default () => {
         }}
       >
         <Grid container>
-          <Grid
-            container
-            xs={12}
-            md={4}
-            alignItems='center'
-            justify='flex-start'
-          >
+          {isMobile ? (
+            <Grid container xs={12} md={4} alignItems='center' justify='center'>
+              <Typography
+                gutterBottom
+                variant={!isMobile ? "h4" : "h5"}
+                align='center'
+              >
+                <EcoIcon fontSize='inherit' color='primary' />
+                Visualize trends over time
+              </Typography>
+            </Grid>
+          ) : null}
+          <Grid item xs={12} md={8}>
+            <Card style={styles.card}>
+              <LineChart data={chartData} />
+            </Card>
+          </Grid>
+          {!isMobile ? (
+            <Grid container xs={12} md={4} alignItems='center' justify='center'>
+              <Typography variant={!isMobile ? "h4" : "h5"} align='center'>
+                <EcoIcon fontSize='inherit' color='primary' />
+                Visualize trends over time
+              </Typography>
+            </Grid>
+          ) : null}
+        </Grid>
+
+        <Divider variant='middle' style={styles.divider} />
+
+        <Grid container>
+          <Grid container xs={12} md={4} alignItems='center' justify='center'>
             <Typography
               gutterBottom
               variant={!isMobile ? "h4" : "h5"}
               align='center'
             >
-              Track daily income and expenses
+              <EcoIcon fontSize='inherit' color='primary' />
+              Track daily activity
             </Typography>
           </Grid>
           <Grid container xs={12} md={8} alignItems='center' justify='flex-end'>
@@ -130,16 +155,37 @@ export default () => {
         <Divider variant='middle' style={styles.divider} />
 
         <Grid container>
-          <Grid item xs={12} md={8}>
-            <Card style={styles.card}>
-              <LineChart data={chartData} />
+          {isMobile ? (
+            <Grid container xs={12} md={4} alignItems='center' justify='center'>
+              <Typography
+                gutterBottom
+                variant={!isMobile ? "h4" : "h5"}
+                align='center'
+              >
+                <EcoIcon fontSize='inherit' color='primary' />
+                Convenient CSV integration
+              </Typography>
+            </Grid>
+          ) : null}
+          <Grid
+            container
+            xs={12}
+            md={8}
+            alignItems='center'
+            justify='flex-start'
+          >
+            <Card raised styles={styles.card}>
+              <img src={csv} width='100%' />
             </Card>
           </Grid>
-          <Grid container xs={12} md={4} alignItems='center' justify='center'>
-            <Typography variant={!isMobile ? "h4" : "h5"} align='center'>
-              Visualize trends over time
-            </Typography>
-          </Grid>
+          {!isMobile ? (
+            <Grid container xs={12} md={4} alignItems='center' justify='center'>
+              <Typography variant={!isMobile ? "h4" : "h5"} align='center'>
+                <EcoIcon fontSize='inherit' color='primary' />
+                Convenient CSV integration
+              </Typography>
+            </Grid>
+          ) : null}
         </Grid>
       </Box>
     </>

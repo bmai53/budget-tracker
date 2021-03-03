@@ -106,7 +106,7 @@ export default () => {
       >
         <Grid container>
           {isMobile ? (
-            <Grid container xs={12} md={4} alignItems='center' justify='center'>
+            <Grid container xs={12} md={6} alignItems='center' justify='center'>
               <Typography
                 gutterBottom
                 variant={!isMobile ? "h4" : "h5"}
@@ -117,13 +117,13 @@ export default () => {
               </Typography>
             </Grid>
           ) : null}
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={6}>
             <Card style={styles.card}>
               <LineChart data={chartData} />
             </Card>
           </Grid>
           {!isMobile ? (
-            <Grid container xs={12} md={4} alignItems='center' justify='center'>
+            <Grid container xs={12} md={6} alignItems='center' justify='center'>
               <Typography variant={!isMobile ? "h4" : "h5"} align='center'>
                 <EcoIcon fontSize='inherit' color='primary' />
                 Visualize trends over time
@@ -135,7 +135,7 @@ export default () => {
         <Divider variant='middle' style={styles.divider} />
 
         <Grid container>
-          <Grid container xs={12} md={4} alignItems='center' justify='center'>
+          <Grid container xs={12} md={6} alignItems='center' justify='center'>
             <Typography
               gutterBottom
               variant={!isMobile ? "h4" : "h5"}
@@ -145,7 +145,7 @@ export default () => {
               Track daily activity
             </Typography>
           </Grid>
-          <Grid container xs={12} md={8} alignItems='center' justify='flex-end'>
+          <Grid container xs={12} md={6} alignItems='center' justify='flex-end'>
             <Card raised styles={styles.card}>
               <img src={budgetTracker} height='500px' />
             </Card>
@@ -156,7 +156,7 @@ export default () => {
 
         <Grid container>
           {isMobile ? (
-            <Grid container xs={12} md={4} alignItems='center' justify='center'>
+            <Grid container xs={12} md={6} alignItems='center' justify='center'>
               <Typography
                 gutterBottom
                 variant={!isMobile ? "h4" : "h5"}
@@ -170,7 +170,7 @@ export default () => {
           <Grid
             container
             xs={12}
-            md={8}
+            md={6}
             alignItems='center'
             justify='flex-start'
           >
@@ -179,7 +179,7 @@ export default () => {
             </Card>
           </Grid>
           {!isMobile ? (
-            <Grid container xs={12} md={4} alignItems='center' justify='center'>
+            <Grid container xs={12} md={6} alignItems='center' justify='center'>
               <Typography variant={!isMobile ? "h4" : "h5"} align='center'>
                 <EcoIcon fontSize='inherit' color='primary' />
                 Convenient CSV integration

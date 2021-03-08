@@ -6,9 +6,9 @@ import EcoIcon from "@material-ui/icons/Eco";
 
 const useStyles = makeStyles((theme) => ({
   splash: {
-    paddingTop: "40%",
+    margin: "25vh 0",
     width: "100wh",
-    height: "60%",
+    height: "25vh",
     lineHeight: "25vh",
     [theme.breakpoints.down("sm")]: {
       lineHeight: "250px",

@@ -71,7 +71,7 @@ export default () => {
   // }, []);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
@@ -146,7 +146,7 @@ export default () => {
               Track daily activity
             </Typography>
           </Grid>
-          <Grid container xs={12} md={6} alignItems='center' justify='flex-end'>
+          <Grid container xs={12} md={6} alignItems='center' justify='center'>
             <Card raised styles={styles.card}>
               {/* <img src={budgetTracker} height='500px' /> */}
               <FakeActivityTable />
@@ -169,13 +169,7 @@ export default () => {
               </Typography>
             </Grid>
           ) : null}
-          <Grid
-            container
-            xs={12}
-            md={6}
-            alignItems='center'
-            justify='flex-start'
-          >
+          <Grid container xs={12} md={6} alignItems='center' justify='center'>
             <Card raised styles={styles.card}>
               <img src={csv} width='100%' />
             </Card>

@@ -50,7 +50,7 @@ export default () => {
 
   const classes = useStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleLogout = () => {
     setUser(null);

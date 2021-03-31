@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Box align='center' className={classes.splash}>

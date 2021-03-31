@@ -28,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
   table: {
     maxWidth: 1000,
   },
+  tableButtonsDisabled: {
+    maxWidth: 1000,
+    pointerEvents: "none",
+  },
   tableHeader: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
@@ -54,6 +58,7 @@ export default ({
   setShowFilters,
   getfilteredList,
   loading,
+  buttonsDisabled,
 }) => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
@@ -62,7 +67,11 @@ export default ({
   const [editRow, setEditRow] = useState(); // store data of row to edit
 
   useEffect(() => {
-    setData(getfilteredList(activitiesList));
+    if (getfilteredList) {
+      setData(getfilteredList(activitiesList));
+    } else {
+      setData(activitiesList);
+    }
   }, [activitiesList, categoriesList, categoryFilter, typeFilter, dateFilter]);
 
   const handleChangePage = (event, newPage) => {
@@ -109,48 +118,58 @@ export default ({
 
   return (
     <>
-      <Card raised className={classes.table}>
+      <Card
+        raised
+        className={
+          buttonsDisabled ? classes.tableButtonsDisabled : classes.table
+        }
+      >
         <TableContainer>
           <Table>
             <TableHead>
-              <TableRow>
-                <TableCell colSpan={4} style={{ verticalAlign: "top" }}>
-                  <ActivityTotal data={data} />
-                </TableCell>
-                <TableCell colSpan={2} align='right'>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        color='primary'
-                        checked={showFilters}
-                        onChange={() => {
-                          setShowFilters(!showFilters);
-                        }}
+              {!buttonsDisabled && (
+                <>
+                  <TableRow>
+                    <TableCell colSpan={4} style={{ verticalAlign: "top" }}>
+                      <ActivityTotal data={data} />
+                    </TableCell>
+                    <TableCell colSpan={2} align='right'>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            color='primary'
+                            checked={showFilters}
+                            onChange={() => {
+                              setShowFilters(!showFilters);
+                            }}
+                          />
+                        }
+                        label='Show Filters'
                       />
-                    }
-                    label='Show Filters'
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={6}>
-                  <Grid container justify='flex-end'>
-                    <Grid item xs={12} sm={6}>
-                      <Collapse in={showFilters}>
-                        <Filter
-                          categoriesList={categoriesList}
-                          categoryFilter={categoryFilter}
-                          typeFilter={typeFilter}
-                          dateFilter={dateFilter}
-                          setCategoryFilter={setCategoryFilter}
-                          setTypeFilter={setTypeFilter}
-                          setDateFilter={setDateFilter}
-                        />
-                      </Collapse>
-                    </Grid>
-                  </Grid>
-                </TableCell>
-              </TableRow>
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell colSpan={6}>
+                      <Grid container justify='flex-end'>
+                        <Grid item xs={12} sm={6}>
+                          <Collapse in={showFilters}>
+                            <Filter
+                              categoriesList={categoriesList}
+                              categoryFilter={categoryFilter}
+                              typeFilter={typeFilter}
+                              dateFilter={dateFilter}
+                              setCategoryFilter={setCategoryFilter}
+                              setTypeFilter={setTypeFilter}
+                              setDateFilter={setDateFilter}
+                            />
+                          </Collapse>
+                        </Grid>
+                      </Grid>
+                    </TableCell>
+                  </TableRow>
+                </>
+              )}
 
               <TableRow>
                 <TableCell className={classes.tableHeader}>Name</TableCell>

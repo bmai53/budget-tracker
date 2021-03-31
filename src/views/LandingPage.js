@@ -8,6 +8,7 @@ import EcoIcon from "@material-ui/icons/Eco";
 import landing from "../images/landing.jpg";
 import budgetTracker from "../images/budget-tracker.png";
 import csv from "../images/csv.png";
+import FakeActivityTable from "./Components/LandingPage/FakeActivityTable";
 
 const styles = {
   banner: {
@@ -147,7 +148,8 @@ export default () => {
           </Grid>
           <Grid container xs={12} md={6} alignItems='center' justify='flex-end'>
             <Card raised styles={styles.card}>
-              <img src={budgetTracker} height='500px' />
+              {/* <img src={budgetTracker} height='500px' /> */}
+              <FakeActivityTable />
             </Card>
           </Grid>
         </Grid>

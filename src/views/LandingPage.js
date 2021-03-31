@@ -13,7 +13,7 @@ import FakeActivityTable from "./Components/LandingPage/FakeActivityTable";
 const styles = {
   banner: {
     width: "100%",
-    backgroundImage: `url(${landing})`,
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url(${landing})`,
     backgroundSize: "cover",
   },
 
